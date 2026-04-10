@@ -1,0 +1,7 @@
+{
+  "name": "Smart-University-Frontend",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
