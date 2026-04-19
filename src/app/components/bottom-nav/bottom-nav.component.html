@@ -1,0 +1,27 @@
+<div class="bottom-nav-wrapper">
+  <nav class="bottom-nav-inner">
+    <div class="tabs-row">
+      <button
+        *ngFor="let tab of tabs"
+        class="tab-btn"
+        [class.active]="isActive(tab.id)"
+        (click)="selectTab(tab.id)"
+      >
+        <!-- Animated active background pill -->
+        <div
+          class="active-bg"
+          [@activeBackground]="isActive(tab.id) ? 'active' : 'inactive'"
+        ></div>
+
+        <!-- Icon -->
+        <ion-icon
+          [name]="isActive(tab.id) ? tab.activeIcon : tab.icon"
+          class="tab-icon"
+        ></ion-icon>
+
+        <!-- Label -->
+        <span class="tab-label">{{ tab.label }}</span>
+      </button>
+    </div>
+  </nav>
+</div>

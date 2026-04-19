@@ -1,3 +1,43 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-tabs>
+
+    <!-- ── Router outlet — each tab loads its page here ── -->
+    <ion-router-outlet></ion-router-outlet>
+
+    <!-- ── Bottom tab bar — Ionic handles the offset automatically ── -->
+    <ion-tab-bar slot="bottom" class="custom-tab-bar">
+
+      <ion-tab-button tab="home" href="/home">
+        <ion-icon name="home-outline" class="tab-icon-inactive"></ion-icon>
+        <ion-icon name="home"        class="tab-icon-active"></ion-icon>
+        <ion-label>Home</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="courses" href="/courses">
+        <ion-icon name="book-outline" class="tab-icon-inactive"></ion-icon>
+        <ion-icon name="book"         class="tab-icon-active"></ion-icon>
+        <ion-label>Courses</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="ai-screen" href="/ai-screen">
+        <ion-icon name="sparkles-outline" class="tab-icon-inactive"></ion-icon>
+        <ion-icon name="sparkles"         class="tab-icon-active"></ion-icon>
+        <ion-label>AI</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="campus" href="/campus">
+        <ion-icon name="location-outline" class="tab-icon-inactive"></ion-icon>
+        <ion-icon name="location"         class="tab-icon-active"></ion-icon>
+        <ion-label>Campus</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="profile" href="/profile">
+        <ion-icon name="person-outline" class="tab-icon-inactive"></ion-icon>
+        <ion-icon name="person"         class="tab-icon-active"></ion-icon>
+        <ion-label>Profile</ion-label>
+      </ion-tab-button>
+
+    </ion-tab-bar>
+
+  </ion-tabs>
 </ion-app>

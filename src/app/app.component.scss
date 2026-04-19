@@ -1,0 +1,35 @@
+// ── Custom tab bar ─────────────────────────────────────────────────────────
+.custom-tab-bar {
+  --background: rgba(var(--ion-color-light-rgb, 255,255,255), 0.85);
+  --border: 1px solid var(--ion-color-light-shade, #e0e0e0);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+
+  ion-tab-button {
+    --color:         var(--ion-color-medium, #92949c);
+    --color-selected: var(--ion-color-primary, #3880ff);
+
+    // Show only the right icon variant per state
+    .tab-icon-active   { display: none; }
+    .tab-icon-inactive { display: block; }
+
+    &.tab-selected {
+      .tab-icon-active   { display: block; }
+      .tab-icon-inactive { display: none; }
+
+      // Active pill background
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 6px 8px;
+        border-radius: 12px;
+        background: rgba(var(--ion-color-primary-rgb, 56,128,255), 0.1);
+        z-index: 0;
+      }
+    }
+
+    ion-icon  { font-size: 24px; position: relative; z-index: 1; }
+    ion-label { font-size: 11px; position: relative; z-index: 1; }
+  }
+}

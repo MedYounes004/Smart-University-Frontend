@@ -1,0 +1,128 @@
+<div class="ion-page">
+
+  <!-- ── Header ── -->
+  <ion-header class="ion-no-border">
+    <ion-toolbar class="ai-toolbar">
+      <div class="toolbar-inner">
+        <div class="ai-avatar">
+          <ion-icon name="sparkles-outline"></ion-icon>
+        </div>
+        <div class="toolbar-text">
+          <h2 class="toolbar-title">AI Assistant</h2>
+          <p class="toolbar-subtitle">Always here to help</p>
+        </div>
+      </div>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- ── Body: plain flex column, no ion-content ── -->
+  <div class="page-body">
+
+    <!-- Scrollable messages -->
+    <div class="messages-scroll" #scrollRef>
+
+      <div *ngIf="showSuggestedPrompts" class="prompts-section" @promptsIn>
+        <p class="prompts-label">Suggested questions:</p>
+        <div class="prompts-list">
+          <button
+            *ngFor="let prompt of suggestedPrompts"
+            class="prompt-btn"
+            (click)="selectPrompt(prompt)"
+          >{{ prompt }}</button>
+        </div>
+      </div>
+
+      <div
+        *ngFor="let message of messages; trackBy: trackById"
+        class="message-row"
+        [class.user-row]="message.sender === 'user'"
+        @messageIn
+      >
+        <div
+          class="message-avatar"
+          [class.assistant-avatar]="message.sender === 'assistant'"
+          [class.user-avatar-icon]="message.sender === 'user'"
+        >
+          <ion-icon [name]="message.sender === 'assistant' ? 'hardware-chip-outline' : 'person-outline'"></ion-icon>
+        </div>
+
+        <div class="message-body" [class.user-body]="message.sender === 'user'">
+          <div
+            class="message-bubble"
+            [class.user-bubble]="message.sender === 'user'"
+            [class.assistant-bubble]="message.sender === 'assistant'"
+          >
+            <p class="bubble-text">{{ message.text }}</p>
+          </div>
+
+          <div *ngIf="message.sources?.length" class="sources-section">
+            <p class="sources-label">Sources:</p>
+            <div *ngFor="let source of message.sources" class="source-card">
+              <ion-icon name="document-text-outline" class="source-icon"></ion-icon>
+              <div class="source-info">
+                <div class="source-header">
+                  <span class="source-title">{{ source.title }}</span>
+                  <ion-icon name="chevron-forward-outline" class="source-chevron"></ion-icon>
+                </div>
+                <p class="source-type">{{ source.type }}</p>
+                <p class="source-excerpt">{{ source.excerpt }}</p>
+              </div>
+            </div>
+          </div>
+
+          <p class="message-time">{{ formatTime(message.timestamp) }}</p>
+        </div>
+      </div>
+
+      <div *ngIf="isTyping" class="message-row" @messageIn>
+        <div class="message-avatar assistant-avatar">
+          <ion-icon name="hardware-chip-outline"></ion-icon>
+        </div>
+        <div class="typing-bubble">
+          <span class="dot dot-1"></span>
+          <span class="dot dot-2"></span>
+          <span class="dot dot-3"></span>
+        </div>
+      </div>
+
+    </div>
+    <!-- /messages-scroll -->
+
+    <!-- ── Input bar: plain div, always in normal flow, always interactive ── -->
+    <div class="input-bar">
+      <div class="input-row">
+
+        <button class="icon-btn" aria-label="Attach file">
+          <ion-icon name="attach-outline"></ion-icon>
+        </button>
+
+        <div class="textarea-wrap">
+          <textarea
+            [(ngModel)]="input"
+            (keydown)="onKeydown($event)"
+            placeholder="Ask me anything..."
+            rows="1"
+            class="chat-textarea"
+          ></textarea>
+          <button class="mic-btn" aria-label="Voice input">
+            <ion-icon name="mic-outline"></ion-icon>
+          </button>
+        </div>
+
+        <button
+          class="send-btn"
+          [class.send-active]="input.trim()"
+          [disabled]="!input.trim()"
+          (click)="handleSend()"
+          aria-label="Send"
+        >
+          <ion-icon name="send-outline"></ion-icon>
+        </button>
+
+      </div>
+    </div>
+
+  </div>
+  <!-- /page-body -->
+
+</div>
