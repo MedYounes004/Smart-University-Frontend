@@ -1,0 +1,67 @@
+.messages-container {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  gap: 8px;
+  min-height: 100%;
+}
+
+.message-bubble {
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 18px;
+  line-height: 1.4;
+
+  p {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+}
+
+.user-message {
+  align-self: flex-end;
+  background-color: var(--ion-color-primary);
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.ai-message {
+  align-self: flex-start;
+  background-color: var(--ion-color-light);
+  color: var(--ion-text-color);
+  border-bottom-left-radius: 4px;
+
+  &.loading {
+    padding: 12px 18px;
+  }
+}
+
+.chat-bar {
+  display: flex;
+  align-items: flex-end;
+  padding: 8px 8px 8px 12px;
+  background: var(--ion-background-color, #fff);
+  border-top: 1px solid var(--ion-color-light-shade);
+  gap: 4px;
+}
+
+.chat-input {
+  flex: 1;
+  --background: var(--ion-color-light);
+  --border-radius: 20px;
+  --padding-start: 14px;
+  --padding-end: 14px;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  max-height: 120px;
+  pointer-events: auto;
+}
+
+.send-button {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  flex-shrink: 0;
+  margin-bottom: 2px;
+  pointer-events: auto;
+}
