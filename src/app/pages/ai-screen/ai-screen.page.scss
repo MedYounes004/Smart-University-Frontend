@@ -1,0 +1,122 @@
+.messages-container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+.message-bubble {
+  display: flex;
+  max-width: 80%;
+
+  &.user-message {
+    align-self: flex-end;
+
+    .bubble-content {
+      background: var(--ion-color-primary);
+      color: #fff;
+      border-radius: 18px 18px 4px 18px;
+    }
+  }
+
+  &.ai-message {
+    align-self: flex-start;
+
+    .bubble-content {
+      background: var(--ion-color-light);
+      color: var(--ion-color-dark);
+      border-radius: 18px 18px 18px 4px;
+    }
+  }
+}
+
+.bubble-content {
+  padding: 10px 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+
+  p {
+    margin: 0 0 4px;
+    font-size: 15px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .timestamp {
+    display: block;
+    font-size: 11px;
+    opacity: 0.65;
+    text-align: right;
+  }
+}
+
+/* Typing indicator */
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 12px 16px;
+
+  span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ion-color-medium);
+    animation: bounce 1.2s infinite ease-in-out;
+
+    &:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+  }
+}
+
+@keyframes bounce {
+  0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+  40% { transform: scale(1.2); opacity: 1; }
+}
+
+/* Footer / chat bar */
+ion-footer {
+  ion-toolbar.chat-toolbar {
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-top: 4px;
+    --padding-bottom: 4px;
+  }
+}
+
+.chat-input-row {
+  display: flex;
+  align-items: flex-end;
+  padding: 4px 8px;
+  gap: 4px;
+
+  .chat-input {
+    flex: 1;
+    --background: var(--ion-color-light);
+    --border-radius: 20px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+    /* Ensure the input is always interactive */
+    pointer-events: auto;
+    z-index: 1;
+  }
+
+  .send-button {
+    flex-shrink: 0;
+    align-self: flex-end;
+    margin-bottom: 2px;
+
+    ion-icon {
+      font-size: 22px;
+    }
+  }
+}
