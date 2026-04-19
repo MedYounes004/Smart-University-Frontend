@@ -1,20 +1,37 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>Smart University</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title size="large">Smart University</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <div id="chat-container">
+    <div id="messages">
+      <div *ngFor="let msg of messages" class="message" [ngClass]="msg.sender">
+        <span class="bubble">{{ msg.text }}</span>
+      </div>
+    </div>
   </div>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-input
+      [(ngModel)]="userInput"
+      placeholder="Type your message..."
+      (keyup.enter)="sendMessage()"
+      clearInput="true"
+    ></ion-input>
+    <ion-buttons slot="end">
+      <ion-button (click)="sendMessage()" [disabled]="!userInput.trim()">
+        <ion-icon slot="icon-only" name="send"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
