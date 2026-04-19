@@ -1,0 +1,47 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>AI Assistant</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" #scrollContent>
+  <div class="messages-container">
+    <div
+      *ngFor="let message of messages"
+      class="message-bubble"
+      [ngClass]="message.role === 'user' ? 'user-message' : 'ai-message'"
+    >
+      <p>{{ message.content }}</p>
+    </div>
+
+    <div *ngIf="isLoading" class="message-bubble ai-message loading">
+      <ion-spinner name="dots"></ion-spinner>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <div class="chat-bar">
+    <ion-textarea
+      class="chat-input"
+      [(ngModel)]="userInput"
+      placeholder="Type a message..."
+      autoGrow="true"
+      rows="1"
+      maxlength="2000"
+      [disabled]="isLoading"
+      (keydown.enter)="onEnterKey($event)"
+    ></ion-textarea>
+    <ion-button
+      fill="clear"
+      class="send-button"
+      (click)="sendMessage()"
+      [disabled]="!userInput.trim() || isLoading"
+    >
+      <ion-icon name="send" slot="icon-only"></ion-icon>
+    </ion-button>
+  </div>
+</ion-footer>
