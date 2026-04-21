@@ -6,7 +6,7 @@ import {
   ElementRef,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  CUSTOM_ELEMENTS_SCHEMA          // ← fixes "ion-page is not a known element"
+  CUSTOM_ELEMENTS_SCHEMA
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -30,6 +30,7 @@ import {
   micOutline,
   send
 } from 'ionicons/icons';
+import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.component';
 
 // ─── Interfaces ───────────────────────────────────────────────
 interface ChatSource {
@@ -87,8 +88,6 @@ const aiKnowledgeBase = {
   styleUrls: ['./ai-assisstant.page.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // CUSTOM_ELEMENTS_SCHEMA lets Angular accept ion-page (and any other
-  // web components) without throwing "not a known element" errors.
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
@@ -99,7 +98,8 @@ const aiKnowledgeBase = {
     IonFooter,
     IonButton,
     IonTextarea,
-    IonIcon
+    IonIcon,
+    BottomNavComponent  // ← added
   ]
 })
 export class AiAssisstantPage implements OnInit, AfterViewChecked {
@@ -110,6 +110,7 @@ export class AiAssisstantPage implements OnInit, AfterViewChecked {
   input = '';
   isTyping = false;
   suggestedPrompts = suggestedPrompts;
+  activeTab = 'ai'; // ← added
 
   private shouldScroll = false;
 
@@ -170,6 +171,11 @@ export class AiAssisstantPage implements OnInit, AfterViewChecked {
       event.preventDefault();
       this.handleSend();
     }
+  }
+
+  onTabChange(tab: string): void { // ← added
+    this.activeTab = tab;
+    this.cdr.markForCheck();
   }
 
   handleSend(): void {

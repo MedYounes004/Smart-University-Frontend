@@ -139,11 +139,15 @@ $radius-sm: 10px;
 .chat-footer {
   background: var(--ion-background-color);
   border-top: 1px solid $border;
+  padding-bottom: 0 !important; // footer itself has no padding
 }
+
 .chat-bar {
-  display: flex; align-items: flex-end; gap: 8px;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
   padding: 10px 12px;
-  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  padding-bottom: calc(80px + env(safe-area-inset-bottom)); // ← increase this value
 }
 .icon-btn {
   --border-radius: 12px;

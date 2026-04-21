@@ -19,7 +19,6 @@
   <ion-content class="messages-content">
     <div class="messages-wrapper">
 
-      <!-- Suggested prompts -->
       <div *ngIf="showSuggestions" class="suggestions-block fade-in">
         <p class="suggestions-label">Suggested questions:</p>
         <button
@@ -32,7 +31,6 @@
         </button>
       </div>
 
-      <!-- Messages -->
       <div
         *ngFor="let message of messages; trackBy: trackById; let i = index"
         class="message-row fade-in"
@@ -48,7 +46,6 @@
             <p class="bubble-text">{{ message.text }}</p>
           </div>
 
-          <!-- Sources -->
           <div *ngIf="message.sources?.length" class="sources-block">
             <p class="sources-label">Sources:</p>
             <div *ngFor="let source of message.sources" class="source-card">
@@ -68,7 +65,6 @@
         </div>
       </div>
 
-      <!-- Typing indicator -->
       <div *ngIf="isTyping" class="message-row fade-in">
         <div class="avatar">
           <ion-icon name="hardware-chip-outline"></ion-icon>
@@ -84,7 +80,7 @@
     </div>
   </ion-content>
 
-  <!-- CHAT BAR — ion-footer anchors it to the bottom -->
+  <!-- CHAT BAR -->
   <ion-footer class="ion-no-border chat-footer">
     <div class="chat-bar">
 
@@ -112,5 +108,11 @@
 
     </div>
   </ion-footer>
+
+  <!-- BOTTOM NAV — after footer, inside ion-page -->
+  <app-bottom-nav
+    [activeTab]="activeTab"
+    (tabChange)="onTabChange($event)"
+  ></app-bottom-nav>
 
 </ion-page>
