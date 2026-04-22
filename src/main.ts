@@ -3,7 +3,9 @@ import { RouteReuseStrategy, provideRouter, withPreloading, PreloadAllModules } 
 import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
 
 import { routes } from './app/app.routes';
-import { AppComponent } from './app/app.component';
+import * as AppComponentModule from './app/app.component';
+
+const AppComponent = ((AppComponentModule as any).AppComponent ?? (AppComponentModule as any).default) as Parameters<typeof bootstrapApplication>[0];
 
 bootstrapApplication(AppComponent, {
   providers: [

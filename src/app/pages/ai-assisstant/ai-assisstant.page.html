@@ -1,0 +1,118 @@
+<ion-page>
+
+  <!-- HEADER -->
+  <ion-header class="ion-no-border ai-header">
+    <ion-toolbar>
+      <div class="header-inner">
+        <div class="bot-avatar">
+          <ion-icon name="sparkles-outline"></ion-icon>
+        </div>
+        <div class="header-text">
+          <h2>AI Assistant</h2>
+          <p>Always here to help</p>
+        </div>
+      </div>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- MESSAGES -->
+  <ion-content class="messages-content">
+    <div class="messages-wrapper">
+
+      <div *ngIf="showSuggestions" class="suggestions-block fade-in">
+        <p class="suggestions-label">Suggested questions:</p>
+        <button
+          *ngFor="let prompt of suggestedPrompts.slice(0, 4); let i = index"
+          class="suggestion-chip slide-in"
+          [style.animation-delay]="(i * 100) + 'ms'"
+          (click)="handleSuggestedPrompt(prompt)"
+        >
+          {{ prompt }}
+        </button>
+      </div>
+
+      <div
+        *ngFor="let message of messages; trackBy: trackById; let i = index"
+        class="message-row fade-in"
+        [class.user-row]="message.sender === 'user'"
+        [style.animation-delay]="(i * 50) + 'ms'"
+      >
+        <div class="avatar" [class.user-avatar]="message.sender === 'user'">
+          <ion-icon [name]="message.sender === 'assistant' ? 'hardware-chip-outline' : 'person-outline'"></ion-icon>
+        </div>
+
+        <div class="bubble-wrap" [class.user-bubble-wrap]="message.sender === 'user'">
+          <div class="bubble" [class.user-bubble]="message.sender === 'user'">
+            <p class="bubble-text">{{ message.text }}</p>
+          </div>
+
+          <div *ngIf="message.sources?.length" class="sources-block">
+            <p class="sources-label">Sources:</p>
+            <div *ngFor="let source of message.sources" class="source-card">
+              <ion-icon name="document-text-outline" class="source-icon"></ion-icon>
+              <div class="source-info">
+                <div class="source-title-row">
+                  <span class="source-title">{{ source.title }}</span>
+                  <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
+                </div>
+                <span class="source-type">{{ source.type }}</span>
+                <p class="source-excerpt">{{ source.excerpt }}</p>
+              </div>
+            </div>
+          </div>
+
+          <span class="timestamp">{{ formatTime(message.timestamp) }}</span>
+        </div>
+      </div>
+
+      <div *ngIf="isTyping" class="message-row fade-in">
+        <div class="avatar">
+          <ion-icon name="hardware-chip-outline"></ion-icon>
+        </div>
+        <div class="bubble typing-bubble">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+      </div>
+
+      <div #messagesEnd></div>
+    </div>
+  </ion-content>
+
+  <!-- CHAT BAR -->
+  <ion-footer class="ion-no-border chat-footer">
+    <div class="chat-bar">
+
+      <ion-button fill="outline" class="icon-btn">
+        <ion-icon slot="icon-only" name="attach-outline"></ion-icon>
+      </ion-button>
+
+      <div class="input-wrap">
+        <ion-textarea
+          [(ngModel)]="input"
+          placeholder="Ask me anything..."
+          [autoGrow]="true"
+          rows="1"
+          class="chat-textarea"
+          (keydown)="handleKeyDown($event)"
+        ></ion-textarea>
+        <ion-button fill="clear" class="mic-btn">
+          <ion-icon slot="icon-only" name="mic-outline"></ion-icon>
+        </ion-button>
+      </div>
+
+      <ion-button class="send-btn" [disabled]="!input.trim()" (click)="handleSend()">
+        <ion-icon slot="icon-only" name="send"></ion-icon>
+      </ion-button>
+
+    </div>
+  </ion-footer>
+
+  <!-- BOTTOM NAV — after footer, inside ion-page -->
+  <app-bottom-nav
+    [activeTab]="activeTab"
+    (tabChange)="onTabChange($event)"
+  ></app-bottom-nav>
+
+</ion-page>
