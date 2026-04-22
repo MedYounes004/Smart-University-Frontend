@@ -1,0 +1,91 @@
+.course-card {
+  background: var(--ion-card-background, #ffffff);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 16px;
+  border: 1px solid var(--ion-color-step-100, #f0f0f0);
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.98);
+    background: var(--ion-color-step-50, #f9f9f9);
+  }
+}
+
+.card-content {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.icon-section {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  ion-icon {
+    font-size: 24px;
+  }
+}
+
+.info-section {
+  flex: 1;
+  min-width: 0;
+}
+
+.header-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.course-code {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ion-text-color, #000);
+}
+
+.course-name {
+  margin: 2px 0 0 0;
+  font-size: 14px;
+  color: var(--ion-color-medium);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.next-class-badge {
+  background: var(--ion-color-step-100, #f0f0f0);
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--ion-color-medium);
+  white-space: nowrap;
+}
+
+.footer-info {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--ion-color-medium);
+  font-size: 12px;
+
+  ion-icon {
+    font-size: 14px;
+  }
+}

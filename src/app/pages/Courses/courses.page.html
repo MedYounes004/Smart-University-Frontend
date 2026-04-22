@@ -1,0 +1,172 @@
+<ion-header [translucent]="true" class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start" *ngIf="selectedCourse">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title *ngIf="!selectedCourse">My Courses</ion-title>
+    <ion-title *ngIf="selectedCourse">{{ selectedCourse.code }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- List View -->
+  <div *ngIf="!selectedCourse" class="page-container">
+    <div class="header-section">
+      <h1 class="main-title">My Courses</h1>
+      <p class="subtitle">Spring Semester 2026</p>
+    </div>
+
+    <div class="courses-list">
+      <app-course-card 
+        *ngFor="let course of courses" 
+        [course]="course"
+        (click)="selectCourse(course)">
+      </app-course-card>
+    </div>
+  </div>
+
+  <!-- Detail View -->
+  <div *ngIf="selectedCourse" class="detail-container">
+    <!-- Course Header Info -->
+    <div class="course-header">
+      <div class="flex-row">
+        <div class="course-icon-large" [style.backgroundColor]="selectedCourse.color + '20'">
+          <ion-icon name="book-outline" [style.color]="selectedCourse.color"></ion-icon>
+        </div>
+        <div class="course-titles">
+          <h1 class="detail-code">{{ selectedCourse.code }}</h1>
+          <p class="detail-name">{{ selectedCourse.name }}</p>
+        </div>
+        <ion-badge color="primary" class="credits-badge">{{ selectedCourse.credits }} Credits</ion-badge>
+      </div>
+    </div>
+
+    <div class="detail-content">
+      <!-- Quick Info Cards -->
+      <div class="quick-info-grid">
+        <div class="info-card">
+          <div class="info-icon-wrapper">
+            <ion-icon name="time-outline" color="primary"></ion-icon>
+          </div>
+          <div class="info-text">
+            <span class="info-label">Schedule</span>
+            <span class="info-value">{{ selectedCourse.schedule }}</span>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-icon-wrapper">
+            <ion-icon name="location-outline" color="primary"></ion-icon>
+          </div>
+          <div class="info-text">
+            <span class="info-label">Room</span>
+            <span class="info-value">{{ selectedCourse.room.split(',')[1] }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Instructor Card -->
+      <div class="instructor-card">
+        <div class="instructor-avatar">
+          <ion-icon name="person-outline"></ion-icon>
+        </div>
+        <div class="instructor-info">
+          <span class="info-label">Instructor</span>
+          <span class="instructor-name">{{ selectedCourse.instructor }}</span>
+        </div>
+        <ion-button fill="outline" size="small" class="contact-button">Contact</ion-button>
+      </div>
+
+      <!-- AI Banner -->
+      <div class="ai-banner" (click)="onNavigateToAI()">
+        <div class="ai-icon-wrapper">
+          <ion-icon name="sparkles-outline"></ion-icon>
+        </div>
+        <div class="ai-text">
+          <p class="ai-title">Ask AI about this course</p>
+          <p class="ai-subtitle">Get instant answers about schedule, exams, and more</p>
+        </div>
+      </div>
+
+      <!-- Tabs Section -->
+      <div class="tabs-container">
+        <div class="tabs-header">
+          <div 
+            class="tab-item" 
+            [class.active]="activeTab === 'overview'"
+            (click)="activeTab = 'overview'">Overview</div>
+          <div 
+            class="tab-item" 
+            [class.active]="activeTab === 'syllabus'"
+            (click)="activeTab = 'syllabus'">Syllabus</div>
+          <div 
+            class="tab-item" 
+            [class.active]="activeTab === 'resources'"
+            (click)="activeTab = 'resources'">Resources</div>
+        </div>
+
+        <div class="tab-content">
+          <!-- Overview Tab -->
+          <div *ngIf="activeTab === 'overview'" class="tab-pane">
+            <div class="section-card">
+              <h3 class="section-title">Description</h3>
+              <p class="section-text">{{ selectedCourse.description }}</p>
+            </div>
+            
+            <div class="section-card">
+              <h3 class="section-title">Course Details</h3>
+              <div class="details-list">
+                <div class="detail-row">
+                  <span class="row-label">Credits</span>
+                  <span class="row-value">{{ selectedCourse.credits }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="row-label">Location</span>
+                  <span class="row-value">{{ selectedCourse.room }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="row-label">Schedule</span>
+                  <span class="row-value">{{ selectedCourse.schedule }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Syllabus Tab -->
+          <div *ngIf="activeTab === 'syllabus'" class="tab-pane">
+            <div class="section-card">
+              <h3 class="section-title">Course Syllabus</h3>
+              <p class="section-text whitespace-pre">{{ selectedCourse.syllabus }}</p>
+            </div>
+          </div>
+
+          <!-- Resources Tab -->
+          <div *ngIf="activeTab === 'resources'" class="tab-pane">
+            <div class="resource-item">
+              <ion-icon name="document-text-outline" color="primary"></ion-icon>
+              <div class="resource-info">
+                <p class="resource-name">Lecture Notes - Week 1-4</p>
+                <p class="resource-meta">PDF • 2.4 MB</p>
+              </div>
+            </div>
+            <div class="resource-item">
+              <ion-icon name="document-text-outline" color="primary"></ion-icon>
+              <div class="resource-info">
+                <p class="resource-name">Assignment Guidelines</p>
+                <p class="resource-meta">PDF • 856 KB</p>
+              </div>
+            </div>
+            <div class="resource-item">
+              <ion-icon name="document-text-outline" color="primary"></ion-icon>
+              <div class="resource-info">
+                <p class="resource-name">Recommended Reading List</p>
+                <p class="resource-meta">PDF • 124 KB</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
