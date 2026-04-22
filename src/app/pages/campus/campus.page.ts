@@ -1,14 +1,12 @@
 import { Component } from '@angular/core';
 import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
-import { BottomNavbarComponent } from '../components/bottom-navbar/bottom-navbar.component';
+import { BottomNavbarComponent } from '../../components/bottom-navbar/bottom-navbar.component';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  selector: 'app-campus',
+  templateUrl: './campus.page.html',
+  styleUrls: ['./campus.page.scss'],
   standalone: true,
   imports: [IonHeader, IonToolbar, IonTitle, IonContent, BottomNavbarComponent],
 })
-export class HomePage {
-  constructor() {}
-}
+export class CampusPage {}

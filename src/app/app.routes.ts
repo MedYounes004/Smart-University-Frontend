@@ -22,4 +22,14 @@ export const routes: Routes = [
         (m) => m.AiAssisstantPage,
       ),
   },
+  {
+    path: 'campus',
+    loadComponent: () =>
+      import('./pages/campus/campus.page').then((m) => m.CampusPage),
+  },
+  {
+    path: 'profile',
+    loadComponent: () =>
+      import('./pages/profile/profile.page').then((m) => m.ProfilePage),
+  },
 ];

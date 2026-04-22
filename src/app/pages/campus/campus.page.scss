@@ -1,0 +1,18 @@
+ion-content {
+  --padding-bottom: calc(90px + env(safe-area-inset-bottom));
+}
+
+.container {
+  padding: 24px;
+}
+
+.container h1 {
+  margin: 0 0 6px 0;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.container p {
+  margin: 0;
+  color: var(--ion-color-medium);
+}

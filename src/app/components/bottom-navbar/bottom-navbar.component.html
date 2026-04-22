@@ -3,13 +3,16 @@
     <div class="tabs-flex">
       <button
         *ngFor="let tab of tabs"
-        (click)="onTabClick(tab.id)"
-        [class.active]="activeTab === tab.id"
+        type="button"
+        [routerLink]="tab.route"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: tab.exact }"
+        #rla="routerLinkActive"
         class="tab-button"
       >
         <div class="icon-container">
-          <ion-icon [name]="activeTab === tab.id ? tab.icon : tab.icon + '-outline'" class="tab-icon"></ion-icon>
-          <div *ngIf="activeTab === tab.id" class="active-indicator"></div>
+          <ion-icon [name]="rla.isActive ? tab.icon : tab.icon + '-outline'" class="tab-icon"></ion-icon>
+          <div *ngIf="rla.isActive" class="active-indicator"></div>
         </div>
         <span class="tab-label">{{ tab.label }}</span>
       </button>

@@ -6,10 +6,12 @@ import {
   ElementRef,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  CUSTOM_ELEMENTS_SCHEMA
+  CUSTOM_ELEMENTS_SCHEMA,
+  inject
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import {
   IonHeader,
   IonToolbar,
@@ -30,7 +32,8 @@ import {
   micOutline,
   send
 } from 'ionicons/icons';
-import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.component';
+import { BottomNavbarComponent } from '../../components/bottom-navbar/bottom-navbar.component';
+import { mockCourses } from '../../data/mock-data';
 
 // ─── Interfaces ───────────────────────────────────────────────
 interface ChatSource {
@@ -99,7 +102,7 @@ const aiKnowledgeBase = {
     IonButton,
     IonTextarea,
     IonIcon,
-    BottomNavComponent  // ← added
+    BottomNavbarComponent
   ]
 })
 export class AiAssisstantPage implements OnInit, AfterViewChecked {
@@ -110,11 +113,12 @@ export class AiAssisstantPage implements OnInit, AfterViewChecked {
   input = '';
   isTyping = false;
   suggestedPrompts = suggestedPrompts;
-  activeTab = 'ai'; // ← added
 
   private shouldScroll = false;
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly route = inject(ActivatedRoute);
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor() {
     addIcons({
       sparklesOutline,
       hardwareChipOutline,
@@ -134,6 +138,12 @@ export class AiAssisstantPage implements OnInit, AfterViewChecked {
       sender: 'assistant',
       timestamp: new Date()
     }];
+
+    const course = this.route.snapshot.queryParamMap.get('course');
+    if (course) {
+      this.input = `Tell me about ${course}`;
+      this.cdr.markForCheck();
+    }
   }
 
   ngAfterViewChecked(): void {
@@ -171,11 +181,6 @@ export class AiAssisstantPage implements OnInit, AfterViewChecked {
       event.preventDefault();
       this.handleSend();
     }
-  }
-
-  onTabChange(tab: string): void { // ← added
-    this.activeTab = tab;
-    this.cdr.markForCheck();
   }
 
   handleSend(): void {
@@ -216,6 +221,28 @@ export class AiAssisstantPage implements OnInit, AfterViewChecked {
           { title: 'Student Registration Guide 2026', type: 'PDF Document',     excerpt: 'Complete list of required documents for new student registration...' },
           { title: 'Academic Calendar',               type: 'University Policy', excerpt: 'Important dates and deadlines for the academic year...' }
         ]
+      };
+    }
+
+    const matchedCourse = mockCourses.find((course) => {
+      const code = course.code.toLowerCase();
+      const name = course.name.toLowerCase();
+      return lower.includes(code) || lower.includes(name);
+    });
+
+    if (matchedCourse) {
+      return {
+        id: Date.now().toString(),
+        text: `Here’s an overview of ${matchedCourse.code} — ${matchedCourse.name}:\n\nInstructor: ${matchedCourse.instructor}\nSchedule: ${matchedCourse.schedule}\nRoom: ${matchedCourse.room}\nCredits: ${matchedCourse.credits}\n\nDescription:\n${matchedCourse.description}`,
+        sender: 'assistant',
+        timestamp: new Date(),
+        sources: [
+          {
+            title: 'My Courses',
+            type: 'App Data',
+            excerpt: 'Course details from your enrolled courses list.',
+          },
+        ],
       };
     }
 

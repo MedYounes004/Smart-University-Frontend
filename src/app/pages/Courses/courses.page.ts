@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonButton, IonIcon, IonBadge } from '@ionic/angular/standalone';
+import { Router } from '@angular/router';
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { arrowBackOutline, bookOutline, timeOutline, locationOutline, personOutline, sparklesOutline, documentTextOutline } from 'ionicons/icons';
 import { Course, mockCourses } from '../../data/mock-data';
 import { CourseCardComponent } from '../../components/course-card/course-card.component';
+import { BottomNavbarComponent } from '../../components/bottom-navbar/bottom-navbar.component';
+import { DetailCourseComponent } from '../../components/detail-course/detail-course.component';
 
 @Component({
   selector: 'app-courses',
@@ -14,23 +16,23 @@ import { CourseCardComponent } from '../../components/course-card/course-card.co
   standalone: true,
   imports: [
     CommonModule, 
-    FormsModule, 
     IonContent, 
     IonHeader, 
     IonTitle, 
     IonToolbar, 
     IonButtons, 
-    IonBackButton, 
     IonButton, 
     IonIcon, 
-    IonBadge,
-    CourseCardComponent
+    CourseCardComponent,
+    DetailCourseComponent,
+    BottomNavbarComponent
   ]
 })
 export class CoursesPage implements OnInit {
   courses: Course[] = mockCourses;
   selectedCourse: Course | null = null;
-  activeTab: string = 'overview';
+
+  private readonly router = inject(Router);
 
   ngOnInit(): void {
     addIcons({
@@ -46,15 +48,22 @@ export class CoursesPage implements OnInit {
 
   selectCourse(course: Course) {
     this.selectedCourse = course;
-    this.activeTab = 'overview';
   }
 
   goBack() {
     this.selectedCourse = null;
   }
 
-  onNavigateToAI() {
-    // Navigate to AI tab or page
-    console.log('Navigate to AI');
+  onNavigateToAI(course?: Course): void {
+    const targetCourse = course ?? this.selectedCourse;
+
+    if (targetCourse) {
+      this.router.navigate(['/ai-assisstant'], {
+        queryParams: { course: targetCourse.code },
+      });
+      return;
+    }
+
+    this.router.navigate(['/ai-assisstant']);
   }
 }
