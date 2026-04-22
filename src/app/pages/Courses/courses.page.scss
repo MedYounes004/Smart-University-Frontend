@@ -1,0 +1,24 @@
+ion-content {
+  --padding-bottom: calc(90px + env(safe-area-inset-bottom));
+}
+
+.page-container {
+  padding: 24px;
+}
+
+.header-section {
+  margin-bottom: 24px;
+  
+  .main-title {
+    font-size: 28px;
+    font-weight: 800;
+    margin: 0;
+    color: var(--ion-text-color);
+  }
+  
+  .subtitle {
+    font-size: 14px;
+    color: var(--ion-color-medium);
+    margin: 4px 0 0 0;
+  }
+}

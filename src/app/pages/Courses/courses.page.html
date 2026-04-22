@@ -1,0 +1,39 @@
+<ion-header [translucent]="true" class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start" *ngIf="selectedCourse">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title *ngIf="!selectedCourse">My Courses</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <!-- List View -->
+    <div *ngIf="!selectedCourse" class="page-container">
+      <div class="header-section">
+        <h1 class="main-title">My Courses</h1>
+        <p class="subtitle">Spring Semester 2026</p>
+      </div>
+
+      <div class="courses-list">
+        <app-course-card
+          *ngFor="let course of courses"
+          [course]="course"
+          (click)="selectCourse(course)"
+        >
+        </app-course-card>
+      </div>
+    </div>
+
+    <!-- Detail View -->
+    <app-detail-course
+      *ngIf="selectedCourse as course"
+      [course]="course"
+      (navigateToAI)="onNavigateToAI($event)"
+    ></app-detail-course>
+  </ion-content>
+
+<app-bottom-navbar></app-bottom-navbar>
