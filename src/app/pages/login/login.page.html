@@ -1,5 +1,4 @@
 <ion-content class="login-content">
-  <!-- Back Button -->
   <button class="back-btn" (click)="goBack()">
     <ion-icon name="arrow-back-outline"></ion-icon>
   </button>
@@ -9,13 +8,13 @@
     <div class="screen-body">
       <h2 class="title">Welcome Back</h2>
       <p class="subtitle">Choose your preferred login method</p>
-
       <div class="method-list">
+
         <button class="method-card" (click)="loginMethod.set('email')">
           <div class="method-icon"><ion-icon name="mail-outline"></ion-icon></div>
           <div class="method-info">
             <h3>University Email</h3>
-            <p>Login with OTP verification</p>
+            <p>Login with email & password</p>
           </div>
         </button>
 
@@ -34,50 +33,43 @@
             <p>Fingerprint or Face ID</p>
           </div>
         </button>
+
       </div>
     </div>
   </div>
 
-  <!-- ── EMAIL: Step 1 – Enter Email ── -->
-  <div class="screen fade-in" *ngIf="loginMethod() === 'email' && !otpSent">
+  <!-- ── EMAIL + PASSWORD ── -->
+  <div class="screen fade-in" *ngIf="loginMethod() === 'email'">
     <div class="screen-body">
       <h2 class="title">Login with Email</h2>
-      <p class="subtitle">Enter your university email address</p>
+      <p class="subtitle">Enter your university credentials</p>
       <div class="form-group">
+
         <input
           class="text-input"
           type="email"
           placeholder="student@university.edu"
           [(ngModel)]="email"
         />
-        <button class="primary-btn" [disabled]="!email" (click)="sendOtp()">
-          Send OTP Code
-        </button>
-      </div>
-    </div>
-  </div>
 
-  <!-- ── EMAIL: Step 2 – OTP ── -->
-  <div class="screen fade-in" *ngIf="loginMethod() === 'email' && otpSent">
-    <div class="screen-body">
-      <h2 class="title">Enter OTP Code</h2>
-      <p class="subtitle">We sent a 6-digit code to {{ email }}</p>
-      <div class="otp-row">
-        <input
-          *ngFor="let d of otpDigits; let i = index"
-          class="otp-input"
-          type="tel"
-          inputmode="numeric"
-          maxlength="1"
-          [value]="otpDigits[i]"
-          (input)="onOtpInput(i, $event)"
-          (keydown)="onOtpKeydown(i, $event)"
-        />
+        <div class="password-wrapper">
+          <input
+            class="text-input"
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="Password"
+            [(ngModel)]="password"
+          />
+          <button class="eye-btn" (click)="showPassword = !showPassword" type="button">
+            <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+          </button>
+        </div>
+
+        <button class="primary-btn" [disabled]="!email || !password" (click)="login()">
+          Login
+        </button>
+
+        <button class="ghost-btn">Forgot Password?</button>
       </div>
-      <button class="primary-btn" [disabled]="!otpComplete" (click)="verifyOtp()">
-        Verify &amp; Login
-      </button>
-      <button class="ghost-btn">Resend Code</button>
     </div>
   </div>
 

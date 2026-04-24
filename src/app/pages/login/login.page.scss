@@ -131,6 +131,29 @@
   &:focus { border-color: var(--primary); }
 }
 
+
+/* ── Password ── */
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .text-input { padding-right: 48px; width: 100%; }
+}
+
+.eye-btn {
+  position: absolute;
+  right: 14px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: var(--ion-color-medium);
+  padding: 0;
+  ion-icon { font-size: 20px; }
+}
+
 /* ── Buttons ── */
 .primary-btn {
   width: 100%;
@@ -173,29 +196,6 @@
   transition: color 0.2s;
 
   &:hover { color: var(--primary); }
-}
-
-/* ── OTP ── */
-.otp-row {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 24px;
-}
-
-.otp-input {
-  width: 46px; height: 56px;
-  text-align: center;
-  font-size: 22px;
-  font-weight: 700;
-  border-radius: 14px;
-  border: 2px solid var(--ion-color-light);
-  background: var(--ion-card-background, #fff);
-  color: var(--ion-text-color);
-  outline: none;
-  transition: border-color 0.2s;
-
-  &:focus { border-color: var(--primary); }
 }
 
 /* ── Scan Box ── */
