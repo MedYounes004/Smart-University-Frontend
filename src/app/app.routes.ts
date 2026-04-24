@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { LoginPage } from './pages/login/login.page';
 
 export const routes: Routes = [
   {
@@ -32,4 +33,10 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/profile/profile.page').then((m) => m.ProfilePage),
   },
+
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./pages/login/login.page').then((m) => m.LoginPage),
+  }
 ];
