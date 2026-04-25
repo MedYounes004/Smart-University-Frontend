@@ -64,8 +64,16 @@
           </button>
         </div>
 
-        <button class="primary-btn" [disabled]="!email || !password" (click)="login()">
-          Login
+        <!-- ── Error message ── -->
+        <div class="error-msg" *ngIf="errorMessage">
+          ⚠️ {{ errorMessage }}
+        </div>
+
+        <button
+          class="primary-btn"
+          [disabled]="!email || !password || loading"
+          (click)="login()">
+          {{ loading ? 'Logging in...' : 'Login' }}
         </button>
 
         <button class="ghost-btn">Forgot Password?</button>
@@ -81,6 +89,11 @@
       </div>
       <h2 class="title">Scan Student ID</h2>
       <p class="subtitle">Place your student ID card near the device</p>
+
+      <div class="error-msg" *ngIf="errorMessage">
+        ⚠️ {{ errorMessage }}
+      </div>
+
       <button class="outline-btn" (click)="simulateScan()" [disabled]="loading">
         {{ loading ? 'Scanning…' : 'Simulate Scan' }}
       </button>
@@ -95,6 +108,11 @@
       </div>
       <h2 class="title">Biometric Login</h2>
       <p class="subtitle">Use your fingerprint or face ID to login</p>
+
+      <div class="error-msg" *ngIf="errorMessage">
+        ⚠️ {{ errorMessage }}
+      </div>
+
       <button class="primary-btn" (click)="simulateBiometric()" [disabled]="loading">
         {{ loading ? 'Authenticating…' : 'Authenticate' }}
       </button>

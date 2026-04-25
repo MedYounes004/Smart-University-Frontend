@@ -1,88 +1,49 @@
 import {
-  Component,
-  OnInit,
-  AfterViewChecked,
-  ViewChild,
-  ElementRef,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  CUSTOM_ELEMENTS_SCHEMA,
-  inject
+  Component, OnInit, AfterViewChecked,
+  ViewChild, ElementRef, ChangeDetectionStrategy,
+  ChangeDetectorRef, CUSTOM_ELEMENTS_SCHEMA, inject
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
-  IonHeader,
-  IonToolbar,
-  IonContent,
-  IonFooter,
-  IonButton,
-  IonTextarea,
-  IonIcon
+  IonHeader, IonToolbar, IonContent, IonFooter,
+  IonButton, IonTextarea, IonIcon
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
-  sparklesOutline,
-  hardwareChipOutline,
-  personOutline,
-  documentTextOutline,
-  chevronForwardOutline,
-  attachOutline,
-  micOutline,
-  send
+  sparklesOutline, hardwareChipOutline, personOutline,
+  documentTextOutline, chevronForwardOutline,
+  attachOutline, micOutline, send, closeOutline
 } from 'ionicons/icons';
 import { BottomNavbarComponent } from '../../components/bottom-navbar/bottom-navbar.component';
-import { mockCourses } from '../../data/mock-data';
+import { ApiService, AskResponse } from '../../services/api.service';
+import { AuthService } from '../../services/auth.service';
 
 // ─── Interfaces ───────────────────────────────────────────────
 interface ChatSource {
-  title: string;
-  type: string;
+  title  : string;
+  type   : string;
   excerpt: string;
 }
 
 interface ChatMessage {
-  id: string;
-  text: string;
-  sender: 'user' | 'assistant';
+  id       : string;
+  text     : string;
+  sender   : 'user' | 'assistant';
   timestamp: Date;
-  sources?: ChatSource[];
+  sources? : ChatSource[];
 }
 
-// ─── Mock Data ────────────────────────────────────────────────
+// ─── Suggested Prompts ────────────────────────────────────────
 const suggestedPrompts: string[] = [
-  'What documents do I need for inscription?',
-  'When is the CS401 exam?',
-  'How do I contact Dr. Mitchell?',
+  'What are the exam rules?',
+  'How is the final grade calculated?',
+  'What topics are covered in this course?',
+  'What is the course schedule?',
   'How do I request a transcript?',
-  'What is the withdrawal deadline?',
-  'How many credits is Linear Algebra?'
+  'What documents do I need for inscription?'
 ];
-
-const aiKnowledgeBase = {
-  inscription: {
-    documents: [
-      'National ID card or passport',
-      'High school diploma (certified copy)',
-      'Birth certificate',
-      '4 passport-sized photos',
-      'Medical certificate',
-      'Proof of address'
-    ],
-    deadlines: 'Fall semester: September 15 | Spring semester: February 1'
-  },
-  exams: [
-    { course: 'CS401',   date: 'June 12, 2026', time: '9:00 AM – 12:00 PM', location: 'Hall B, Room 201' },
-    { course: 'MATH302', date: 'June 14, 2026', time: '2:00 PM – 5:00 PM',  location: 'Hall A, Room 105' }
-  ],
-  administrative: {
-    transcriptRequest:
-      '1. Log in to the Student Portal\n2. Go to Academic Records\n3. Click "Request Transcript"\n4. Fill in the form and submit\n5. Allow 3–5 business days for processing',
-    courseWithdrawal:
-      'You may withdraw from a course without academic penalty until Week 8 of the semester. After that, a "W" grade will appear on your transcript.'
-  }
-};
 
 // ─── Component ────────────────────────────────────────────────
 @Component({
@@ -93,15 +54,9 @@ const aiKnowledgeBase = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
-    CommonModule,
-    FormsModule,
-    IonHeader,
-    IonToolbar,
-    IonContent,
-    IonFooter,
-    IonButton,
-    IonTextarea,
-    IonIcon,
+    CommonModule, FormsModule,
+    IonHeader, IonToolbar, IonContent,
+    IonFooter, IonButton, IonTextarea, IonIcon,
     BottomNavbarComponent
   ]
 })
@@ -109,41 +64,44 @@ export class AiAssisstantPage implements OnInit, AfterViewChecked {
 
   @ViewChild('messagesEnd') messagesEnd!: ElementRef;
 
-  messages: ChatMessage[] = [];
-  input = '';
-  isTyping = false;
-  suggestedPrompts = suggestedPrompts;
+  messages         : ChatMessage[] = [];
+  input             = '';
+  isTyping          = false;
+  courseCode        = '';
+  suggestedPrompts  = suggestedPrompts;
+  selectedFile      : File | null = null;
 
-  private shouldScroll = false;
-  private readonly cdr = inject(ChangeDetectorRef);
-  private readonly route = inject(ActivatedRoute);
+  private shouldScroll          = false;
+  private readonly cdr          = inject(ChangeDetectorRef);
+  private readonly route        = inject(ActivatedRoute);
+  private readonly apiService   = inject(ApiService);
+  private readonly authService  = inject(AuthService);
 
   constructor() {
     addIcons({
-      sparklesOutline,
-      hardwareChipOutline,
-      personOutline,
-      documentTextOutline,
-      chevronForwardOutline,
-      attachOutline,
-      micOutline,
-      send
+      sparklesOutline, hardwareChipOutline, personOutline,
+      documentTextOutline, chevronForwardOutline,
+      attachOutline, micOutline, send, closeOutline
     });
   }
 
+  // ── Lifecycle ──────────────────────────────────────────────
   ngOnInit(): void {
+    // Get course from route: /ai-assistant?course=AI101
+    this.courseCode = this.route.snapshot.queryParamMap.get('course') ?? '';
+
+    const courseContext = this.courseCode
+      ? `I'm ready to answer questions about course **${this.courseCode}**.`
+      : `I can help you with courses, exams, and administrative procedures. You can also attach a PDF and ask me about it!`;
+
     this.messages = [{
-      id: '1',
-      text: "Hello! I'm your Smart University AI Assistant. I can help you with information about courses, exams, inscription documents, and administrative procedures. How can I assist you today?",
-      sender: 'assistant',
+      id       : '1',
+      text     : `Hello! I'm your Smart University AI Assistant. ${courseContext} How can I help you today?`,
+      sender   : 'assistant',
       timestamp: new Date()
     }];
 
-    const course = this.route.snapshot.queryParamMap.get('course');
-    if (course) {
-      this.input = `Tell me about ${course}`;
-      this.cdr.markForCheck();
-    }
+    this.cdr.markForCheck();
   }
 
   ngAfterViewChecked(): void {
@@ -159,6 +117,7 @@ export class AiAssisstantPage implements OnInit, AfterViewChecked {
     } catch {}
   }
 
+  // ── Getters ────────────────────────────────────────────────
   get showSuggestions(): boolean {
     return this.messages.length === 1;
   }
@@ -171,11 +130,13 @@ export class AiAssisstantPage implements OnInit, AfterViewChecked {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 
+  // ── Suggested prompts ──────────────────────────────────────
   handleSuggestedPrompt(prompt: string): void {
     this.input = prompt;
     this.cdr.markForCheck();
   }
 
+  // ── Keyboard ───────────────────────────────────────────────
   handleKeyDown(event: KeyboardEvent): void {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
@@ -183,138 +144,213 @@ export class AiAssisstantPage implements OnInit, AfterViewChecked {
     }
   }
 
+  // ── File selection ─────────────────────────────────────────
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
+
+    const file = input.files[0];
+
+    if (!file.name.endsWith('.pdf')) {
+      this.addAssistantMessage('❌ Only PDF files are supported.', []);
+      input.value = '';
+      return;
+    }
+
+    this.selectedFile = file;
+    this.cdr.markForCheck();
+
+    // Reset input so same file can be re-attached
+    input.value = '';
+  }
+
+  removeFile(): void {
+    this.selectedFile = null;
+    this.cdr.markForCheck();
+  }
+
+  // ── File upload → FastAPI directly ─────────────────────────
+  private async uploadFile(file: File): Promise<void> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    // Use existing courseCode or generate a session ID
+    const uploadCourseId = this.courseCode || `session_${Date.now()}`;
+
+    const response = await fetch(
+      `http://localhost:8000/upload?course_id=${uploadCourseId}`,
+      {
+        method : 'POST',
+        headers: { 'X-Internal-Key': 'dev-secret-key' },
+        body   : formData
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Upload failed: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    // Set courseCode so future questions search this collection
+    this.courseCode = uploadCourseId;
+
+    this.addAssistantMessage(
+      `✅ "${file.name}" uploaded successfully!\n` +
+      `📦 ${result.chunks_stored} chunks indexed.\n\n` +
+      `You can now ask me questions about this document.`,
+      []
+    );
+  }
+
+  // ── Send message ───────────────────────────────────────────
   handleSend(): void {
-    if (!this.input.trim()) return;
+    const text         = this.input.trim();
+    const fileToUpload = this.selectedFile;
+
+    // Nothing to send
+    if ((!text && !fileToUpload) || this.isTyping) return;
+
+    // ── Auth guard ─────────────────────────────────────
+    const token = this.authService.getToken();
+    if (!token) {
+      this.addAssistantMessage(
+        '🔒 You are not logged in. Please login first.',
+        []
+      );
+      return;
+    }
+
+    // ── Course guard (only if no file attached) ────────
+    if (!this.courseCode && !fileToUpload) {
+      this.addAssistantMessage(
+        '📚 Please select a course or attach a PDF first.',
+        []
+      );
+      return;
+    }
+
+    // ── Build user message display ─────────────────────
+    const displayText = fileToUpload
+      ? text
+        ? `${text}\n📎 ${fileToUpload.name}`
+        : `📎 ${fileToUpload.name}`
+      : text;
 
     const userMessage: ChatMessage = {
-      id: Date.now().toString(),
-      text: this.input,
-      sender: 'user',
+      id       : Date.now().toString(),
+      text     : displayText,
+      sender   : 'user',
       timestamp: new Date()
     };
 
-    this.messages = [...this.messages, userMessage];
-    const sentText = this.input;
-    this.input = '';
-    this.isTyping = true;
+    this.messages     = [...this.messages, userMessage];
+    this.input        = '';
+    this.isTyping     = true;
     this.shouldScroll = true;
+    this.selectedFile = null;
     this.cdr.markForCheck();
 
-    setTimeout(() => {
-      this.messages = [...this.messages, this.generateAIResponse(sentText)];
-      this.isTyping = false;
-      this.shouldScroll = true;
-      this.cdr.markForCheck();
-    }, 1500);
+    // ── Ask question via Spring Boot → FastAPI ─────────
+   const askQuestion = () => {
+  if (!text) {
+    this.isTyping     = false;
+    this.shouldScroll = true;
+    this.cdr.markForCheck();
+    return;
   }
 
-  private generateAIResponse(userMessage: string): ChatMessage {
-    const lower = userMessage.toLowerCase();
+  // ── Session upload → call FastAPI directly ─────────
+  // ── Real course → call Spring Boot ────────────────
+  const isSessionCourse = this.courseCode.startsWith('session_');
 
-    if (lower.includes('document') || lower.includes('inscription')) {
-      return {
-        id: Date.now().toString(),
-        text: `For inscription, you'll need:\n\n${aiKnowledgeBase.inscription.documents.map((d, i) => `${i + 1}. ${d}`).join('\n')}\n\nDeadlines: ${aiKnowledgeBase.inscription.deadlines}`,
-        sender: 'assistant',
-        timestamp: new Date(),
-        sources: [
-          { title: 'Student Registration Guide 2026', type: 'PDF Document',     excerpt: 'Complete list of required documents for new student registration...' },
-          { title: 'Academic Calendar',               type: 'University Policy', excerpt: 'Important dates and deadlines for the academic year...' }
-        ]
-      };
-    }
-
-    const matchedCourse = mockCourses.find((course) => {
-      const code = course.code.toLowerCase();
-      const name = course.name.toLowerCase();
-      return lower.includes(code) || lower.includes(name);
+  if (isSessionCourse) {
+    // Call FastAPI directly (no Spring Boot auth needed)
+    fetch(
+      `http://localhost:8000/ask?course_id=${this.courseCode}`,
+      {
+        method : 'POST',
+        headers: {
+          'Content-Type' : 'application/json',
+          'X-Internal-Key': 'dev-secret-key'
+        },
+        body: JSON.stringify({ question: text })
+      }
+    )
+    .then(res => res.json())
+    .then(response => {
+      const sources: ChatSource[] = (response.sources || []).map((s: any) => ({
+        title  : s.file,
+        type   : `Page ${s.page}`,
+        excerpt: `Relevance: ${Math.round(s.score * 100)}%`
+      }));
+      this.addAssistantMessage(response.answer, sources);
+    })
+    .catch(() => {
+      this.addAssistantMessage(
+        '🔌 Cannot connect to server. Make sure FastAPI is running.',
+        []
+      );
     });
 
-    if (matchedCourse) {
-      return {
-        id: Date.now().toString(),
-        text: `Here’s an overview of ${matchedCourse.code} — ${matchedCourse.name}:\n\nInstructor: ${matchedCourse.instructor}\nSchedule: ${matchedCourse.schedule}\nRoom: ${matchedCourse.room}\nCredits: ${matchedCourse.credits}\n\nDescription:\n${matchedCourse.description}`,
-        sender: 'assistant',
-        timestamp: new Date(),
-        sources: [
-          {
-            title: 'My Courses',
-            type: 'App Data',
-            excerpt: 'Course details from your enrolled courses list.',
-          },
-        ],
-      };
-    }
+  } else {
+    // Call Spring Boot (real course with enrollment check)
+    this.apiService.askQuestion(this.courseCode, text, token).subscribe({
+      next: (response: AskResponse) => {
+        const sources: ChatSource[] = response.sources.map(s => ({
+          title  : s.file,
+          type   : `Page ${s.page}`,
+          excerpt: `Relevance: ${Math.round(s.score * 100)}%`
+        }));
+        this.addAssistantMessage(response.answer, sources);
+      },
+      error: (err) => {
+        console.error('RAG error:', err);
+        const errorText =
+          err.status === 404
+            ? '📚 No knowledge base found for this course.'
+            : err.status === 401
+            ? '🔒 Session expired. Please login again.'
+            : err.status === 0
+            ? '🔌 Cannot connect to server.'
+            : '❌ Unable to get a response. Please try again.';
+        this.addAssistantMessage(errorText, []);
+      }
+    });
+  }
+};
 
-    if (lower.includes('exam') && lower.includes('cs401')) {
-      const exam = aiKnowledgeBase.exams.find(e => e.course === 'CS401');
-      return {
-        id: Date.now().toString(),
-        text: `The CS401 exam is scheduled for:\n\nDate: ${exam?.date}\nTime: ${exam?.time}\nLocation: ${exam?.location}\n\nArrive 15 minutes early with your student ID.`,
-        sender: 'assistant',
-        timestamp: new Date(),
-        sources: [
-          { title: 'Final Exam Schedule - Spring 2026', type: 'Academic Document', excerpt: 'Complete examination timetable for all courses...' }
-        ]
-      };
+    // ── Upload first if file attached, then ask ────────
+    if (fileToUpload) {
+      this.uploadFile(fileToUpload)
+        .then(() => askQuestion())
+        .catch((err) => {
+          console.error('Upload error:', err);
+          this.addAssistantMessage(
+            '❌ Failed to upload the file. Make sure FastAPI is running.',
+            []
+          );
+          this.isTyping = false;
+          this.cdr.markForCheck();
+        });
+    } else {
+      askQuestion();
     }
+  }
 
-    if (lower.includes('dr.') || lower.includes('professor') || lower.includes('mitchell')) {
-      return {
-        id: Date.now().toString(),
-        text: `Dr. Sarah Mitchell — Professor, Computer Science Department.\n\nCourse: CS401 - Advanced Algorithms\nOffice: Building A, Room 405\nOffice Hours: Tue & Thu, 3:00–5:00 PM\nEmail: s.mitchell@university.edu`,
-        sender: 'assistant',
-        timestamp: new Date(),
-        sources: [
-          { title: 'Faculty Directory', type: 'University Database', excerpt: 'Contact information and profiles for all teaching staff...' }
-        ]
-      };
-    }
-
-    if (lower.includes('transcript')) {
-      return {
-        id: Date.now().toString(),
-        text: `To request a transcript:\n\n${aiKnowledgeBase.administrative.transcriptRequest}`,
-        sender: 'assistant',
-        timestamp: new Date(),
-        sources: [
-          { title: 'Student Services Handbook', type: 'Policy Document', excerpt: 'Guidelines for requesting official academic documents...' }
-        ]
-      };
-    }
-
-    if (lower.includes('credit') && lower.includes('linear algebra')) {
-      return {
-        id: Date.now().toString(),
-        text: `MATH302 - Linear Algebra is a 4-credit course.\n\nInstructor: Prof. James Chen\nSchedule: Tue & Thu, 2:00 PM\nLocation: Building B, Room 205`,
-        sender: 'assistant',
-        timestamp: new Date(),
-        sources: [
-          { title: 'Course Catalog 2025-2026', type: 'Academic Document', excerpt: 'Complete listing of all courses with credit information...' }
-        ]
-      };
-    }
-
-    if (lower.includes('withdrawal') || lower.includes('drop')) {
-      return {
-        id: Date.now().toString(),
-        text: `Course Withdrawal:\n\n${aiKnowledgeBase.administrative.courseWithdrawal}`,
-        sender: 'assistant',
-        timestamp: new Date(),
-        sources: [
-          { title: 'Academic Policies', type: 'University Regulation', excerpt: 'Rules and procedures for course registration changes...' }
-        ]
-      };
-    }
-
-    return {
-      id: Date.now().toString(),
-      text: `I can help with:\n\n• Course information & schedules\n• Exam dates & locations\n• Instructor details & office hours\n• Inscription documents\n• Administrative procedures\n• Academic policies\n\nCould you be more specific?`,
-      sender: 'assistant',
+  // ── Add assistant message ──────────────────────────────────
+  private addAssistantMessage(text: string, sources: ChatSource[]): void {
+    const reply: ChatMessage = {
+      id       : Date.now().toString(),
+      text,
+      sender   : 'assistant',
       timestamp: new Date(),
-      sources: [
-        { title: 'Student Handbook 2026', type: 'General Reference', excerpt: 'Comprehensive guide to university policies and procedures...' }
-      ]
+      sources
     };
+
+    this.messages     = [...this.messages, reply];
+    this.isTyping     = false;
+    this.shouldScroll = true;
+    this.cdr.markForCheck();
   }
 }
