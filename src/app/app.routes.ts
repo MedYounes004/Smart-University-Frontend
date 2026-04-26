@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'ai-assisstant',
+    redirectTo: 'welcome',
     pathMatch: 'full',
   },
   {
@@ -13,7 +13,7 @@ export const routes: Routes = [
   {
     path: 'courses',
     loadComponent: () =>
-      import('./pages/Courses/courses.page').then((m) => m.CoursesPage),
+      import('./pages/courses/courses.page').then((m) => m.CoursesPage),
   },
   {
     path: 'ai-assisstant',
@@ -31,5 +31,13 @@ export const routes: Routes = [
     path: 'profile',
     loadComponent: () =>
       import('./pages/profile/profile.page').then((m) => m.ProfilePage),
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./pages/dashboard/dashboard.page').then( m => m.DashboardPage)
+  },
+  {
+    path: 'welcome',
+    loadComponent: () => import('./pages/welcome/welcome.page').then( m => m.WelcomePage)
   },
 ];

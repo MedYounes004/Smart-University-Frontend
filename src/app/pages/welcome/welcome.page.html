@@ -1,0 +1,44 @@
+<ion-content [fullscreen]="true" class="welcome-content">
+  <div class="welcome-wrapper">
+
+    <!-- Logo -->
+    <div class="logo-wrap">
+      <div class="logo-box">
+        <ion-icon name="school-outline" class="logo-icon"></ion-icon>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <h1 class="welcome-title">Smart University</h1>
+    <p class="welcome-subtitle">Your intelligent campus companion</p>
+
+    <!-- Features -->
+    <div class="features">
+      <div
+        *ngFor="let feature of features; let i = index"
+        class="feature-card"
+        [style.animation-delay]="(0.3 + i * 0.1) + 's'"
+      >
+        <div class="feature-icon-wrap">
+          <ion-icon [name]="feature.icon" class="feature-icon"></ion-icon>
+        </div>
+        <div class="feature-text">
+          <h3 class="feature-title">{{ feature.title }}</h3>
+          <p class="feature-desc">{{ feature.description }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-wrap">
+      <button
+        class="cta-btn ion-activatable"
+        (click)="onGetStarted()"
+      >
+        <ion-ripple-effect></ion-ripple-effect>
+        Get Started
+      </button>
+    </div>
+
+  </div>
+</ion-content>

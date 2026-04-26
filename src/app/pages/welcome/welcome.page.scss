@@ -1,0 +1,182 @@
+// ── Tokens ────────────────────────────────────────────────────────────────────
+:host {
+  --primary:          #4f46e5;
+  --primary-fg:       #ffffff;
+  --muted-fg:         #717182;
+  --card-bg:          rgba(255, 255, 255, 0.55);
+  --card-border:      rgba(0, 0, 0, 0.08);
+  --fw-medium:        500;
+  --fw-bold:          700;
+}
+
+// ── Content — gradient background ─────────────────────────────────────────────
+.welcome-content {
+  // Light gradient: indigo-50 → white → purple-50
+  --background: linear-gradient(135deg, #eef2ff 0%, #ffffff 50%, #faf5ff 100%);
+  --color: #0f0f1a;
+}
+
+// ── Full-height centering wrapper ─────────────────────────────────────────────
+.welcome-wrapper {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px 48px;
+  text-align: center;
+}
+
+// ── Logo ──────────────────────────────────────────────────────────────────────
+.logo-wrap {
+  margin-bottom: 28px;
+  opacity: 0;
+  transform: scale(0.6);
+  animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s forwards;
+}
+
+@keyframes popIn {
+  to { opacity: 1; transform: scale(1); }
+}
+
+.logo-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  background: var(--primary);
+  border-radius: 28px;           // rounded-3xl
+  box-shadow: 0 8px 32px rgba(79, 70, 229, 0.35);
+}
+
+.logo-icon {
+  font-size: 3rem;
+  color: var(--primary-fg);
+}
+
+// ── Title & subtitle ──────────────────────────────────────────────────────────
+.welcome-title {
+  font-size: 2.25rem;            // text-4xl
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+  margin: 0 0 10px;
+  // Gradient text — indigo-600 → purple-600
+  background: linear-gradient(90deg, #4f46e5, #9333ea);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  opacity: 0;
+  animation: fadeUp 0.5s ease 0.35s forwards;
+}
+
+.welcome-subtitle {
+  font-size: 1rem;
+  font-weight: var(--fw-medium);
+  color: var(--muted-fg);
+  margin: 0 0 40px;
+
+  opacity: 0;
+  animation: fadeUp 0.5s ease 0.45s forwards;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// ── Feature cards ─────────────────────────────────────────────────────────────
+.features {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 36px;
+}
+
+.feature-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 1rem;           // rounded-2xl
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  text-align: left;
+
+  opacity: 0;
+  transform: translateX(-16px);
+  animation: slideRight 0.45s ease forwards;
+}
+
+@keyframes slideRight {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.feature-icon-wrap {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;           // rounded-xl
+  background: rgba(79, 70, 229, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-icon {
+  font-size: 1.25rem;
+  color: var(--primary);
+}
+
+.feature-text { flex: 1; min-width: 0; }
+
+.feature-title {
+  font-size: 0.9375rem;
+  font-weight: var(--fw-medium);
+  color: #0f0f1a;
+  margin: 0 0 3px;
+  line-height: 1.4;
+}
+
+.feature-desc {
+  font-size: 0.8125rem;
+  color: var(--muted-fg);
+  margin: 0;
+  line-height: 1.5;
+}
+
+// ── CTA button ────────────────────────────────────────────────────────────────
+.cta-wrap {
+  width: 100%;
+  max-width: 400px;
+
+  opacity: 0;
+  animation: fadeUp 0.45s ease 0.65s forwards;
+}
+
+.cta-btn {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 56px;                  // h-14
+  border: none;
+  border-radius: 1rem;           // rounded-2xl
+  background: var(--primary);
+  color: var(--primary-fg);
+  font-size: 1rem;
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(79, 70, 229, 0.3);
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 10px rgba(79, 70, 229, 0.25);
+  }
+}
