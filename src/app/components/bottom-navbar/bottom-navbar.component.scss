@@ -1,0 +1,94 @@
+.bottom-nav-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: rgba(var(--ion-background-color-rgb, 255, 255, 255), 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid var(--ion-color-step-150, #e0e0e0);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottom-nav {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 8px 16px;
+}
+
+.tabs-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.tab-button {
+  background: transparent;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 12px;
+  flex: 1;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  position: relative;
+  outline: none;
+
+  .icon-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+
+  .tab-icon {
+    font-size: 24px;
+    color: var(--ion-color-medium);
+    transition: color 0.2s ease;
+  }
+
+  .tab-label {
+    font-size: 12px;
+    margin-top: 4px;
+    color: var(--ion-color-medium);
+    transition: color 0.2s ease;
+  }
+
+  &.active {
+    .tab-icon {
+      color: var(--ion-color-primary);
+    }
+    .tab-label {
+      color: var(--ion-color-primary);
+      font-weight: 500;
+    }
+
+    .active-indicator {
+      position: absolute;
+      top: -4px;
+      bottom: -4px;
+      left: -8px;
+      right: -8px;
+      background: rgba(var(--ion-color-primary-rgb), 0.1);
+      border-radius: 12px;
+      z-index: -1;
+      animation: spring 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+  }
+}
+
+@keyframes spring {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
