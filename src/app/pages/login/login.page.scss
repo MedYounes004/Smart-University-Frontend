@@ -1,0 +1,247 @@
+:host {
+  --primary: var(--ion-color-primary, #6c63ff);
+  --primary-tint: rgba(108, 99, 255, 0.12);
+  --radius-card: 20px;
+  --radius-btn: 16px;
+}
+
+.login-content {
+  --background: var(--ion-background-color, #fff);
+}
+
+/* ── Back Button ── */
+.back-btn {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+  background: transparent;
+  border: none;
+  padding: 10px;
+  border-radius: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: var(--ion-text-color);
+  transition: background 0.2s;
+
+  ion-icon { font-size: 24px; }
+
+  &:hover { background: var(--ion-color-light); }
+}
+
+/* ── Screen Wrapper ── */
+.screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 80px 24px 40px;
+.fade-in { animation: fadeUp 0.35s ease both; }
+
+  &.center {
+    align-items: center;
+    justify-content: center;
+    padding-top: 24px;
+  }
+}
+
+.screen-body {
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+
+  &.center { align-items: center; text-align: center; }
+}
+
+/* ── Typography ── */
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: var(--ion-text-color);
+}
+
+.subtitle {
+  font-size: 15px;
+  color: var(--ion-color-medium);
+  margin: 0 0 36px;
+}
+
+/* ── Method Cards ── */
+.method-list { display: flex; flex-direction: column; gap: 14px; }
+
+.method-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  border-radius: var(--radius-card);
+  border: 2px solid var(--ion-color-light);
+  background: var(--ion-card-background, #fff);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s, transform 0.15s;
+
+  &:hover  { border-color: var(--primary); transform: scale(1.01); }
+  &:active { transform: scale(0.98); }
+}
+
+.method-icon {
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  background: var(--primary-tint);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+
+  ion-icon { font-size: 22px; color: var(--primary); }
+}
+
+.method-info h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 2px;
+  color: var(--ion-text-color);
+}
+
+.method-info p {
+  font-size: 13px;
+  color: var(--ion-color-medium);
+  margin: 0;
+}
+
+/* ── Form ── */
+.form-group { display: flex; flex-direction: column; gap: 14px; }
+
+.text-input {
+  width: 100%;
+  height: 56px;
+  border-radius: var(--radius-btn);
+  border: 2px solid var(--ion-color-light);
+  padding: 0 16px;
+  font-size: 15px;
+  outline: none;
+  background: var(--ion-card-background, #fff);
+  color: var(--ion-text-color);
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+
+  &:focus { border-color: var(--primary); }
+}
+
+
+/* ── Password ── */
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .text-input { padding-right: 48px; width: 100%; }
+}
+
+.eye-btn {
+  position: absolute;
+  right: 14px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: var(--ion-color-medium);
+  padding: 0;
+  ion-icon { font-size: 20px; }
+}
+
+/* ── Buttons ── */
+.primary-btn {
+  width: 100%;
+  height: 56px;
+  border-radius: var(--radius-btn);
+  background: var(--primary);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+  &:not(:disabled):active { transform: scale(0.98); }
+}
+
+.outline-btn {
+  padding: 14px 32px;
+  border-radius: var(--radius-btn);
+  border: 2px solid var(--ion-color-light);
+  background: transparent;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--ion-text-color);
+  transition: border-color 0.2s;
+
+  &:hover { border-color: var(--primary); }
+  &:disabled { opacity: 0.5; }
+}
+
+.ghost-btn {
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  color: var(--ion-color-medium);
+  cursor: pointer;
+  margin-top: 4px;
+  transition: color 0.2s;
+
+  &:hover { color: var(--primary); }
+}
+
+/* ── Scan Box ── */
+.scan-box {
+  width: 180px; height: 180px;
+  border-radius: 30px;
+  background: var(--primary-tint);
+  border: 3px dashed rgba(108, 99, 255, 0.3);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 32px;
+
+  ion-icon { font-size: 80px; color: var(--primary); }
+
+  &.pulsing { animation: pulse 1.5s ease-in-out infinite; }
+}
+
+/* ── Bio Circle ── */
+.bio-circle {
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), #a855f7);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 32px;
+  box-shadow: 0 12px 40px rgba(108, 99, 255, 0.35);
+
+  ion-icon { font-size: 56px; color: #fff; }
+
+  &.pulsing { animation: pulse 1s ease-in-out infinite; }
+}
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.06); }
+}
+.error-msg {
+  color: #ef4444;
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 8px 12px;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 8px;
+  margin-bottom: 8px;
+}

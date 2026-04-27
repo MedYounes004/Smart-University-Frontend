@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { LoginPage } from './pages/login/login.page';
 
 export const routes: Routes = [
   {
@@ -13,7 +14,7 @@ export const routes: Routes = [
   {
     path: 'courses',
     loadComponent: () =>
-      import('./pages/courses/courses.page').then((m) => m.CoursesPage),
+      import('./pages/Courses/courses.page').then((m) => m.CoursesPage),
   },
   {
     path: 'ai-assisstant',
@@ -31,6 +32,13 @@ export const routes: Routes = [
     path: 'profile',
     loadComponent: () =>
       import('./pages/profile/profile.page').then((m) => m.ProfilePage),
+  },
+
+
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./pages/login/login.page').then((m) => m.LoginPage),
   },
   {
     path: 'dashboard',

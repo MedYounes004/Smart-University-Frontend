@@ -82,9 +82,30 @@
 
   <!-- CHAT BAR -->
   <ion-footer class="ion-no-border chat-footer">
+
+    <!-- FILE PREVIEW CHIP -->
+    <div *ngIf="selectedFile" class="file-preview-bar">
+      <div class="file-chip">
+        <ion-icon name="document-text-outline" class="file-chip-icon"></ion-icon>
+        <span class="file-chip-name">{{ selectedFile.name }}</span>
+        <button class="file-chip-remove" (click)="removeFile()">
+          <ion-icon name="close-outline"></ion-icon>
+        </button>
+      </div>
+    </div>
+
     <div class="chat-bar">
 
-      <ion-button fill="outline" class="icon-btn">
+      <!-- Hidden file input -->
+      <input
+        #fileInput
+        type="file"
+        accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg"
+        style="display: none"
+        (change)="onFileSelected($event)"
+      />
+
+      <ion-button fill="outline" class="icon-btn" (click)="fileInput.click()">
         <ion-icon slot="icon-only" name="attach-outline"></ion-icon>
       </ion-button>
 
@@ -102,14 +123,17 @@
         </ion-button>
       </div>
 
-      <ion-button class="send-btn" [disabled]="!input.trim()" (click)="handleSend()">
+      <ion-button
+        class="send-btn"
+        [disabled]="!input.trim() && !selectedFile"
+        (click)="handleSend()"
+      >
         <ion-icon slot="icon-only" name="send"></ion-icon>
       </ion-button>
 
     </div>
   </ion-footer>
 
-  <!-- BOTTOM NAV — after footer, inside ion-page -->
   <app-bottom-navbar></app-bottom-navbar>
 
 </ion-page>
