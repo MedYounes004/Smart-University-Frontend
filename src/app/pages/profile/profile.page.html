@@ -1,14 +1,136 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Profile</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="profile-content">
 
-<ion-content [fullscreen]="true">
-  <div class="container">
-    <h1>Profile</h1>
-    <p>Coming soon.</p>
+  <!-- Header Gradient -->
+  <div class="profile-header">
+    <div class="avatar-wrap">
+      <ion-icon name="person-outline" class="avatar-icon"></ion-icon>
+    </div>
+    <div class="header-info">
+      <h1>Alex Johnson</h1>
+      <p class="major">Computer Science • Junior</p>
+      <p class="student-id">ID: 2023-CS-4567</p>
+    </div>
   </div>
-</ion-content>
 
-<app-bottom-navbar></app-bottom-navbar>
+  <div class="content-wrapper">
+
+    <!-- Quick Stats -->
+    <div class="stats-grid">
+      <ion-card class="stat-card">
+        <ion-card-content>
+          <p class="stat-number">{{ courses.length }}</p>
+          <p class="stat-label">Courses</p>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="stat-card">
+        <ion-card-content>
+          <p class="stat-number">3.8</p>
+          <p class="stat-label">GPA</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="section">
+      <h2 class="section-title">Contact Information</h2>
+      <ion-card class="info-card">
+        <ion-card-content>
+          <div class="info-row">
+            <div class="info-icon">
+              <ion-icon name="mail-outline"></ion-icon>
+            </div>
+            <div class="info-text">
+              <span class="info-label">Email</span>
+              <span class="info-value">alex.johnson@university.edu</span>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="info-row">
+            <div class="info-icon">
+              <ion-icon name="call-outline"></ion-icon>
+            </div>
+            <div class="info-text">
+              <span class="info-label">Phone</span>
+              <span class="info-value">+1 (555) 123-4567</span>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Academic Progress -->
+    <div class="section">
+      <h2 class="section-title">Academic Progress</h2>
+      <ion-card class="info-card">
+        <ion-card-content>
+          <div class="info-row">
+            <div class="info-icon">
+              <ion-icon name="book-outline"></ion-icon>
+            </div>
+            <div class="info-text">
+              <span class="info-value">Completed Credits</span>
+            </div>
+            <span class="info-badge">89 / 120</span>
+          </div>
+          <div class="divider"></div>
+          <div class="info-row">
+            <div class="info-icon">
+              <ion-icon name="trophy-outline"></ion-icon>
+            </div>
+            <div class="info-text">
+              <span class="info-value">Dean's List</span>
+            </div>
+            <span class="info-badge success">2 times</span>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Settings -->
+    <div class="section">
+      <h2 class="section-title">Settings</h2>
+      <ion-card class="info-card">
+        <ion-card-content>
+          <div class="info-row">
+            <div class="info-icon">
+              <ion-icon [name]="isDarkMode ? 'moon-outline' : 'sunny-outline'"></ion-icon>
+            </div>
+            <div class="info-text">
+              <span class="info-value">Dark Mode</span>
+            </div>
+            <ion-toggle [(ngModel)]="isDarkMode" (ionChange)="onToggleDarkMode()"></ion-toggle>
+          </div>
+          <div class="divider"></div>
+          <div class="info-row tappable" (click)="openAccountSettings()">
+            <div class="info-icon">
+              <ion-icon name="settings-outline"></ion-icon>
+            </div>
+            <div class="info-text">
+              <span class="info-value">Account Settings</span>
+            </div>
+            <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Logout -->
+    <div class="section">
+      <ion-button
+        expand="block"
+        fill="outline"
+        class="logout-btn"
+        (click)="onLogout()"
+      >
+        <ion-icon name="log-out-outline" slot="start"></ion-icon>
+        Logout
+      </ion-button>
+    </div>
+
+  </div>
+
+  <!-- Bottom Navbar -->
+  <app-bottom-navbar></app-bottom-navbar>
+
+</ion-content>
