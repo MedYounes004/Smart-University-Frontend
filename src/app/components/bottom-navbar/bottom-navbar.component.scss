@@ -4,11 +4,12 @@
   left: 0;
   right: 0;
   z-index: 50;
-  background: rgba(var(--ion-background-color-rgb, 255, 255, 255), 0.8);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-top: 1px solid var(--ion-color-step-150, #e0e0e0);
+  border-top: 1px solid #e8e8ed;
   padding-bottom: env(safe-area-inset-bottom);
+  box-shadow: 0 -1px 12px rgba(0, 0, 0, 0.06);
 }
 
 .bottom-nav {
@@ -48,24 +49,28 @@
 
   .tab-icon {
     font-size: 24px;
-    color: var(--ion-color-medium);
+    color: #9e9ea7;
     transition: color 0.2s ease;
   }
 
   .tab-label {
     font-size: 12px;
     margin-top: 4px;
-    color: var(--ion-color-medium);
+    color: #9e9ea7;
     transition: color 0.2s ease;
+  }
+
+  &:hover:not(.active) {
+    background: rgba(0, 0, 0, 0.04);
   }
 
   &.active {
     .tab-icon {
-      color: var(--ion-color-primary);
+      color: #3880ff;
     }
     .tab-label {
-      color: var(--ion-color-primary);
-      font-weight: 500;
+      color: #3880ff;
+      font-weight: 600;
     }
 
     .active-indicator {
@@ -74,7 +79,7 @@
       bottom: -4px;
       left: -8px;
       right: -8px;
-      background: rgba(var(--ion-color-primary-rgb), 0.1);
+      background: rgba(56, 128, 255, 0.10);
       border-radius: 12px;
       z-index: -1;
       animation: spring 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
