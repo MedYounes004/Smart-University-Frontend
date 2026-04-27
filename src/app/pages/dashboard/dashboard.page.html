@@ -1,0 +1,118 @@
+<ion-header class="dashboard-header ion-no-border">
+  <ion-toolbar>
+    <div class="header-inner">
+      <p class="header-date">{{ todayLabel }}</p>
+      <h1 class="header-greeting">{{ greeting }}, Alex</h1>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="dashboard-content">
+
+  <!-- AI Assistant card -->
+  <div class="section" [style.animation-delay]="'0.05s'">
+    <ion-card
+      class="ai-card ion-activatable"
+      (click)="navigateToAI.emit()"
+      button
+    >
+      <ion-ripple-effect></ion-ripple-effect>
+      <ion-card-content>
+        <div class="ai-card-inner">
+          <ion-icon name="sparkles-outline" class="ai-icon"></ion-icon>
+          <div>
+            <h3 class="ai-title">AI Assistant</h3>
+            <p class="ai-subtitle">
+              Ask me anything about courses, exams, or procedures
+            </p>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Today's Classes -->
+  <div class="section" [style.animation-delay]="'0.12s'">
+    <div class="section-header">
+      <h2 class="section-title">Today's Classes</h2>
+      <ion-icon name="time-outline" class="section-icon"></ion-icon>
+    </div>
+
+    <ng-container *ngFor="let course of todayCourses">
+      <ion-card class="list-card">
+        <ion-card-content>
+          <div class="course-row">
+            <div
+              class="course-accent"
+              [style.background-color]="course.color"
+            ></div>
+            <div class="course-info">
+              <div class="course-top">
+                <div>
+                  <p class="course-code">{{ course.code }}</p>
+                  <p class="course-name">{{ course.name }}</p>
+                </div>
+                <ion-badge class="time-badge">{{ course.nextClass }}</ion-badge>
+              </div>
+              <p class="course-room">{{ course.room }}</p>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
+  </div>
+
+  <!-- Announcements -->
+  <div class="section" [style.animation-delay]="'0.19s'">
+    <div class="section-header">
+      <h2 class="section-title">Announcements</h2>
+      <ion-icon name="notifications-outline" class="section-icon"></ion-icon>
+    </div>
+
+    <ng-container *ngFor="let ann of latestAnnouncements">
+      <ion-card class="list-card">
+        <ion-card-content>
+          <div class="ann-row">
+            <span class="ann-badge" [ngClass]="getCategoryClass(ann.category)">
+              {{ ann.category | uppercase }}
+            </span>
+            <div class="ann-body">
+              <h3 class="ann-title">{{ ann.title }}</h3>
+              <p class="ann-content">{{ ann.content }}</p>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
+  </div>
+
+  <!-- Upcoming Events -->
+  <div class="section section-last" [style.animation-delay]="'0.26s'">
+    <div class="section-header">
+      <h2 class="section-title">Upcoming Events</h2>
+      <ion-icon name="calendar-outline" class="section-icon"></ion-icon>
+    </div>
+
+    <ng-container *ngFor="let event of upcomingEvents">
+      <ion-card class="list-card">
+        <ion-card-content>
+          <div class="event-row">
+            <div class="event-date-box">
+              <p class="event-day">{{ getDay(event.date) }}</p>
+              <p class="event-month">{{ getMonth(event.date) }}</p>
+            </div>
+            <div class="event-info">
+              <h3 class="event-title">{{ event.title }}</h3>
+              <p class="event-time">{{ event.time }}</p>
+              <div class="event-meta">
+                <ion-badge class="cat-badge" color="medium">{{ event.category }}</ion-badge>
+                <span class="attendees">{{ event.attendees }} attending</span>
+              </div>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
+  </div>
+
+</ion-content>

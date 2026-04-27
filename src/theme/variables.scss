@@ -1,5 +1,7 @@
+/* src/theme/variables.scss */
+
 :root {
-  /** primary **/
+  /* ── Ionic Primary Color ── */
   --ion-color-primary: #6366f1;
   --ion-color-primary-rgb: 99, 102, 241;
   --ion-color-primary-contrast: #ffffff;
@@ -7,25 +9,69 @@
   --ion-color-primary-shade: #5558d4;
   --ion-color-primary-tint: #7375f3;
 
-  /** background & text — always light **/
-  --ion-background-color: #f4f5f8;
-  --ion-background-color-rgb: 244, 245, 248;
-  --ion-text-color: #1a1a2e;
-  --ion-text-color-rgb: 26, 26, 46;
-  --ion-card-background: #ffffff;
-
+  /* ── Ionic Medium Color ── */
   --ion-color-medium: #9e9ea7;
   --ion-color-medium-rgb: 158, 158, 167;
   --ion-color-medium-contrast: #ffffff;
   --ion-color-medium-shade: #8b8b94;
   --ion-color-medium-tint: #a9a9b0;
+
+  /* ── Backgrounds & Text ── */
+  --ion-background-color: #f4f5f8;
+  --ion-background-color-rgb: 244, 245, 248;
+  --ion-text-color: #1a1a2e;
+  --ion-text-color-rgb: 26, 26, 46;
+  --ion-card-background: #ffffff;
+  --ion-toolbar-background: #ffffff;
+  --ion-item-background: #ffffff;
+
+  /* ── App Theme Tokens ── */
+  --background: #f4f5f8;
+  --foreground: #1a1a2e;
+  --card: #ffffff;
+  --card-foreground: #1a1a2e;
+  --primary: #6366f1;
+  --primary-foreground: #ffffff;
+  --muted: #ececf0;
+  --muted-foreground: #9e9ea7;
+  --border: rgba(0, 0, 0, 0.08);
+  --radius: 0.75rem;
 }
 
-/** Dark mode — only when body.dark is set manually **/
+/* ── Manually toggled dark mode ONLY ── */
 body.dark {
   --ion-background-color: #0f0f14;
   --ion-background-color-rgb: 15, 15, 20;
   --ion-text-color: #e8e8f0;
   --ion-text-color-rgb: 232, 232, 240;
   --ion-card-background: #1c1c26;
+  --ion-toolbar-background: #1c1c26;
+  --ion-item-background: #1c1c26;
+
+  --background: #0f0f14;
+  --foreground: #e8e8f0;
+  --card: #1c1c26;
+  --card-foreground: #e8e8f0;
+  --muted: #2a2a38;
+  --muted-foreground: #6b6b80;
+  --border: rgba(255, 255, 255, 0.08);
+}
+
+/* ── KILL Ionic's automatic OS dark mode ── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ion-background-color: #f4f5f8 !important;
+    --ion-background-color-rgb: 244, 245, 248 !important;
+    --ion-text-color: #1a1a2e !important;
+    --ion-text-color-rgb: 26, 26, 46 !important;
+    --ion-card-background: #ffffff !important;
+    --ion-toolbar-background: #ffffff !important;
+    --ion-item-background: #ffffff !important;
+  }
+
+  body:not(.dark) {
+    --ion-background-color: #f4f5f8 !important;
+    --ion-text-color: #1a1a2e !important;
+    --ion-card-background: #ffffff !important;
+  }
 }

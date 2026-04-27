@@ -4,7 +4,7 @@ import { LoginPage } from './pages/login/login.page';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'ai-assisstant',
+    redirectTo: 'welcome',
     pathMatch: 'full',
   },
   {
@@ -34,9 +34,18 @@ export const routes: Routes = [
       import('./pages/profile/profile.page').then((m) => m.ProfilePage),
   },
 
+
   {
     path: 'login',
     loadComponent: () =>
       import('./pages/login/login.page').then((m) => m.LoginPage),
-  }
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./pages/dashboard/dashboard.page').then( m => m.DashboardPage)
+  },
+  {
+    path: 'welcome',
+    loadComponent: () => import('./pages/welcome/welcome.page').then( m => m.WelcomePage)
+  },
 ];
