@@ -60,6 +60,7 @@
 
     <div class="form-body">
 
+      <!-- ── Name Row ── -->
       <div class="name-row">
         <div class="field-group half">
           <label>First Name</label>
@@ -86,6 +87,7 @@
         </div>
       </div>
 
+      <!-- ── Email ── -->
       <div class="field-group">
         <label>University Email</label>
         <div class="input-wrapper">
@@ -99,19 +101,7 @@
         </div>
       </div>
 
-      <div class="field-group">
-        <label>{{ role === 'student' ? 'Student ID' : 'Employee ID' }}</label>
-        <div class="input-wrapper">
-          <ion-icon name="card-outline" class="input-icon"></ion-icon>
-          <input
-            type="text"
-            [placeholder]="role === 'student' ? 'STU123456' : 'EMP789012'"
-            [(ngModel)]="formData.idNumber"
-            class="custom-input"
-          />
-        </div>
-      </div>
-
+      <!-- ── Password ── -->
       <div class="field-group">
         <label>Password</label>
         <div class="input-wrapper">
@@ -131,6 +121,7 @@
         </p>
       </div>
 
+      <!-- ── Confirm Password ── -->
       <div class="field-group">
         <label>Confirm Password</label>
         <div class="input-wrapper">
@@ -150,23 +141,68 @@
         </p>
       </div>
 
+      <!-- ── Student only: filiere ── -->
+      <div class="field-group" *ngIf="role === 'student'">
+        <label>Field of Study (Filière)</label>
+        <div class="input-wrapper">
+          <ion-icon name="book-outline" class="input-icon"></ion-icon>
+          <input
+            type="text"
+            placeholder="e.g. Informatique, Génie Civil"
+            [(ngModel)]="formData.filiere"
+            class="custom-input"
+          />
+        </div>
+      </div>
+
+      <!-- ── Professor only: grade ── -->
+      <div class="field-group" *ngIf="role === 'professor'">
+        <label>Grade</label>
+        <div class="input-wrapper">
+          <ion-icon name="ribbon-outline" class="input-icon"></ion-icon>
+          <input
+            type="text"
+            placeholder="e.g. Professeur, Maître de conférences"
+            [(ngModel)]="formData.grade"
+            class="custom-input"
+          />
+        </div>
+      </div>
+
+      <!-- ── Professor only: departement ── -->
+      <div class="field-group" *ngIf="role === 'professor'">
+        <label>Department</label>
+        <div class="input-wrapper">
+          <ion-icon name="business-outline" class="input-icon"></ion-icon>
+          <input
+            type="text"
+            placeholder="e.g. Informatique, Mathématiques"
+            [(ngModel)]="formData.departement"
+            class="custom-input"
+          />
+        </div>
+      </div>
+
+      <!-- ── Error message ── -->
+      <div class="error-msg" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
     </div><!-- end form-body -->
 
     <div class="form-footer">
       <button
         class="submit-btn"
-        [disabled]="!isFormValid()"
-        [class.disabled]="!isFormValid()"
+        [disabled]="!isFormValid() || loading"
+        [class.disabled]="!isFormValid() || loading"
         (click)="handleSubmit()"
       >
-        Create Account
+        {{ loading ? 'Creating account...' : 'Create Account' }}
       </button>
       <p class="terms-text">
         By signing up, you agree to our Terms of Service and Privacy Policy
       </p>
     </div>
-
-  
 
   </div>
 

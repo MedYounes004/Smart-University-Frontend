@@ -307,3 +307,14 @@
   color: var(--ion-color-medium, #8c8c8c);
   margin: 0;
 }
+
+
+.error-msg {
+  color      : #ef4444;
+  font-size  : 0.85rem;
+  text-align : center;
+  margin-top : 0.5rem;
+  padding    : 8px 12px;
+  background : #fef2f2;
+  border-radius: 8px;
+}

@@ -1,136 +1,155 @@
 <ion-content [fullscreen]="true" class="profile-content">
 
-  <!-- Header Gradient -->
-  <div class="profile-header">
-    <div class="avatar-wrap">
-      <ion-icon name="person-outline" class="avatar-icon"></ion-icon>
-    </div>
-    <div class="header-info">
-      <h1>Alex Johnson</h1>
-      <p class="major">Computer Science • Junior</p>
-      <p class="student-id">ID: 2023-CS-4567</p>
-    </div>
+  <!-- ── Loading ── -->
+  <div *ngIf="loading" class="loading-wrapper">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Loading profile...</p>
   </div>
 
-  <div class="content-wrapper">
+  <!-- ── Profile content ── -->
+  <ng-container *ngIf="!loading">
 
-    <!-- Quick Stats -->
-    <div class="stats-grid">
-      <ion-card class="stat-card">
-        <ion-card-content>
-          <p class="stat-number">{{ courses.length }}</p>
-          <p class="stat-label">Courses</p>
-        </ion-card-content>
-      </ion-card>
-
-      <ion-card class="stat-card">
-        <ion-card-content>
-          <p class="stat-number">3.8</p>
-          <p class="stat-label">GPA</p>
-        </ion-card-content>
-      </ion-card>
+    <!-- Header -->
+    <div class="profile-header">
+      <div class="avatar-wrap">
+        <ion-icon name="person-outline" class="avatar-icon"></ion-icon>
+      </div>
+      <div class="header-info">
+        <h1>{{ fullName || 'Unknown User' }}</h1>
+        <p class="major">{{ roleDetail }}</p>
+        <p class="role-badge-text">{{ roleLabel }}</p>
+      </div>
     </div>
 
-    <!-- Contact Info -->
-    <div class="section">
-      <h2 class="section-title">Contact Information</h2>
-      <ion-card class="info-card">
-        <ion-card-content>
-          <div class="info-row">
-            <div class="info-icon">
-              <ion-icon name="mail-outline"></ion-icon>
+    <div class="content-wrapper">
+
+      <!-- Quick Stats -->
+      <div class="stats-grid">
+        <ion-card class="stat-card">
+          <ion-card-content>
+            <p class="stat-number">{{ courseCount }}</p>
+            <p class="stat-label">
+              {{ role === 'PROFESSOR' ? 'Courses Taught' : 'Courses' }}
+            </p>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card class="stat-card">
+          <ion-card-content>
+            <p class="stat-number">{{ role === 'PROFESSOR' ? '★' : '—' }}</p>
+            <p class="stat-label">{{ role === 'PROFESSOR' ? 'Professor' : 'GPA' }}</p>
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="section">
+        <h2 class="section-title">Contact Information</h2>
+        <ion-card class="info-card">
+          <ion-card-content>
+            <div class="info-row">
+              <div class="info-icon">
+                <ion-icon name="mail-outline"></ion-icon>
+              </div>
+              <div class="info-text">
+                <span class="info-label">Email</span>
+                <span class="info-value">{{ email }}</span>
+              </div>
             </div>
-            <div class="info-text">
-              <span class="info-label">Email</span>
-              <span class="info-value">alex.johnson@university.edu</span>
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+      <!-- Student: Academic Info -->
+      <div class="section" *ngIf="role === 'STUDENT'">
+        <h2 class="section-title">Academic Info</h2>
+        <ion-card class="info-card">
+          <ion-card-content>
+            <div class="info-row">
+              <div class="info-icon">
+                <ion-icon name="book-outline"></ion-icon>
+              </div>
+              <div class="info-text">
+                <span class="info-label">Filière</span>
+                <span class="info-value">{{ filiere || '—' }}</span>
+              </div>
             </div>
-          </div>
-          <div class="divider"></div>
-          <div class="info-row">
-            <div class="info-icon">
-              <ion-icon name="call-outline"></ion-icon>
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+      <!-- Professor: Academic Info -->
+      <div class="section" *ngIf="role === 'PROFESSOR'">
+        <h2 class="section-title">Academic Info</h2>
+        <ion-card class="info-card">
+          <ion-card-content>
+            <div class="info-row">
+              <div class="info-icon">
+                <ion-icon name="ribbon-outline"></ion-icon>
+              </div>
+              <div class="info-text">
+                <span class="info-label">Grade</span>
+                <span class="info-value">{{ grade || '—' }}</span>
+              </div>
             </div>
-            <div class="info-text">
-              <span class="info-label">Phone</span>
-              <span class="info-value">+1 (555) 123-4567</span>
+            <div class="divider"></div>
+            <div class="info-row">
+              <div class="info-icon">
+                <ion-icon name="business-outline"></ion-icon>
+              </div>
+              <div class="info-text">
+                <span class="info-label">Department</span>
+                <span class="info-value">{{ departement || '—' }}</span>
+              </div>
             </div>
-          </div>
-        </ion-card-content>
-      </ion-card>
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+      <!-- Settings -->
+      <div class="section">
+        <h2 class="section-title">Settings</h2>
+        <ion-card class="info-card">
+          <ion-card-content>
+            <div class="info-row">
+              <div class="info-icon">
+                <ion-icon [name]="isDarkMode ? 'moon-outline' : 'sunny-outline'"></ion-icon>
+              </div>
+              <div class="info-text">
+                <span class="info-value">Dark Mode</span>
+              </div>
+              <ion-toggle [(ngModel)]="isDarkMode" (ionChange)="onToggleDarkMode()"></ion-toggle>
+            </div>
+            <div class="divider"></div>
+            <div class="info-row tappable" (click)="openAccountSettings()">
+              <div class="info-icon">
+                <ion-icon name="settings-outline"></ion-icon>
+              </div>
+              <div class="info-text">
+                <span class="info-value">Account Settings</span>
+              </div>
+              <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+      <!-- Logout -->
+      <div class="section">
+        <ion-button
+          expand="block"
+          fill="outline"
+          class="logout-btn"
+          (click)="onLogout()"
+        >
+          <ion-icon name="log-out-outline" slot="start"></ion-icon>
+          Logout
+        </ion-button>
+      </div>
+
     </div>
+  </ng-container>
 
-    <!-- Academic Progress -->
-    <div class="section">
-      <h2 class="section-title">Academic Progress</h2>
-      <ion-card class="info-card">
-        <ion-card-content>
-          <div class="info-row">
-            <div class="info-icon">
-              <ion-icon name="book-outline"></ion-icon>
-            </div>
-            <div class="info-text">
-              <span class="info-value">Completed Credits</span>
-            </div>
-            <span class="info-badge">89 / 120</span>
-          </div>
-          <div class="divider"></div>
-          <div class="info-row">
-            <div class="info-icon">
-              <ion-icon name="trophy-outline"></ion-icon>
-            </div>
-            <div class="info-text">
-              <span class="info-value">Dean's List</span>
-            </div>
-            <span class="info-badge success">2 times</span>
-          </div>
-        </ion-card-content>
-      </ion-card>
-    </div>
-
-    <!-- Settings -->
-    <div class="section">
-      <h2 class="section-title">Settings</h2>
-      <ion-card class="info-card">
-        <ion-card-content>
-          <div class="info-row">
-            <div class="info-icon">
-              <ion-icon [name]="isDarkMode ? 'moon-outline' : 'sunny-outline'"></ion-icon>
-            </div>
-            <div class="info-text">
-              <span class="info-value">Dark Mode</span>
-            </div>
-            <ion-toggle [(ngModel)]="isDarkMode" (ionChange)="onToggleDarkMode()"></ion-toggle>
-          </div>
-          <div class="divider"></div>
-          <div class="info-row tappable" (click)="openAccountSettings()">
-            <div class="info-icon">
-              <ion-icon name="settings-outline"></ion-icon>
-            </div>
-            <div class="info-text">
-              <span class="info-value">Account Settings</span>
-            </div>
-            <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
-          </div>
-        </ion-card-content>
-      </ion-card>
-    </div>
-
-    <!-- Logout -->
-    <div class="section">
-      <ion-button
-        expand="block"
-        fill="outline"
-        class="logout-btn"
-        (click)="onLogout()"
-      >
-        <ion-icon name="log-out-outline" slot="start"></ion-icon>
-        Logout
-      </ion-button>
-    </div>
-
-  </div>
-
-  <!-- Bottom Navbar -->
   <app-bottom-navbar></app-bottom-navbar>
 
 </ion-content>
