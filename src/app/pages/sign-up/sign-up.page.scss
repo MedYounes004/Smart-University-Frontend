@@ -1,0 +1,320 @@
+// ──────────────────────────────────────────
+// sign-up.page.scss  –  Ionic Angular 6+
+// ──────────────────────────────────────────
+
+// ---------- ion-content host ----------
+.sign-up-content {
+  --background: var(--ion-background-color, #f8f8f8);
+}
+
+// ---------- layout wrappers ----------
+.screen-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: 0 20px 32px;
+}
+
+.top-bar {
+  padding-top: 16px;
+  padding-bottom: 8px;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--ion-text-color, #111);
+  transition: background 0.2s;
+
+  ion-icon {
+    font-size: 22px;
+  }
+
+  &:active {
+    background: var(--ion-color-light, #e8e8e8);
+  }
+}
+
+// ---------- headings ----------
+.heading-block {
+  margin-bottom: 40px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: var(--ion-text-color, #111);
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--ion-color-medium, #8c8c8c);
+  margin: 0;
+}
+
+// ---------- role selection ----------
+.content-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.role-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.role-card {
+  width: 100%;
+  padding: 28px 20px;
+  border-radius: 20px;
+  border: 2px solid var(--ion-color-light-shade, #e0e0e0);
+  background: var(--ion-card-background, #ffffff);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.15s;
+
+  &:active {
+    transform: scale(0.98);
+    border-color: var(--ion-color-primary, #3880ff);
+  }
+
+  h3 {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0 0 4px;
+    color: var(--ion-text-color, #111);
+  }
+
+  p {
+    font-size: 13px;
+    color: var(--ion-color-medium, #8c8c8c);
+    margin: 0;
+    text-align: center;
+  }
+}
+
+.role-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ion-icon {
+    font-size: 34px;
+    color: #ffffff;
+  }
+}
+
+.student-icon {
+  background: linear-gradient(135deg, var(--ion-color-primary, #3880ff), #1a5fd4);
+  box-shadow: 0 6px 20px rgba(56, 128, 255, 0.30);
+}
+
+.professor-icon {
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.30);
+}
+
+// ---------- form header ----------
+.form-header {
+  padding-top: 8px;
+  margin-bottom: 24px;
+}
+
+.form-header-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.role-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  ion-icon {
+    font-size: 22px;
+    color: #ffffff;
+  }
+}
+
+.student-badge {
+  background: linear-gradient(135deg, var(--ion-color-primary, #3880ff), #1a5fd4);
+}
+
+.professor-badge {
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+}
+
+// ---------- form body ----------
+.form-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  padding-bottom: 8px;
+}
+
+.name-row {
+  display: flex;
+  gap: 12px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+
+  &.half {
+    flex: 1;
+  }
+
+  label {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--ion-text-color, #111);
+  }
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .input-icon {
+    position: absolute;
+    left: 12px;
+    font-size: 18px;
+    color: var(--ion-color-medium, #8c8c8c);
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+.custom-input {
+  width: 100%;
+  height: 48px;
+  border-radius: 12px;
+  border: 1.5px solid var(--ion-color-light-shade, #e0e0e0);
+  background: var(--ion-card-background, #ffffff);
+  padding: 0 40px 0 40px;
+  font-size: 14px;
+  color: var(--ion-text-color, #111);
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  appearance: none;
+
+  &:focus {
+    border-color: var(--ion-color-primary, #3880ff);
+  }
+
+  &::placeholder {
+    color: var(--ion-color-medium, #b0b0b0);
+  }
+}
+
+// input with no left icon (last name field)
+.half:last-child .custom-input {
+  padding-left: 14px;
+}
+
+.toggle-btn {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--ion-color-medium, #8c8c8c);
+  display: flex;
+  align-items: center;
+  padding: 0;
+
+  ion-icon {
+    font-size: 20px;
+  }
+
+  &:active {
+    color: var(--ion-color-primary, #3880ff);
+  }
+}
+
+.error-hint {
+  font-size: 11px;
+  color: var(--ion-color-danger, #eb445a);
+  margin: 4px 0 0;
+}
+
+// ---------- form footer ----------
+.form-footer {
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.submit-btn {
+  width: 100%;
+  height: 54px;
+  border-radius: 16px;
+  border: none;
+  background: var(--ion-color-primary, #3880ff);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+
+  &.disabled,
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.terms-text {
+  text-align: center;
+  font-size: 12px;
+  color: var(--ion-color-medium, #8c8c8c);
+  margin: 0;
+}
+
+
+.error-msg {
+  color      : #ef4444;
+  font-size  : 0.85rem;
+  text-align : center;
+  margin-top : 0.5rem;
+  padding    : 8px 12px;
+  background : #fef2f2;
+  border-radius: 8px;
+}

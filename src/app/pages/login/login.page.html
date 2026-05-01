@@ -35,6 +35,15 @@
         </button>
 
       </div>
+
+      <!-- ✅ Sign Up prompt -->
+      <div class="sign-up-prompt">
+        <p>
+          Don't have an account?
+          <button class="sign-up-link" (click)="onGoToSignUp()">Sign Up</button>
+        </p>
+      </div>
+
     </div>
   </div>
 
@@ -64,7 +73,6 @@
           </button>
         </div>
 
-        <!-- ── Error message ── -->
         <div class="error-msg" *ngIf="errorMessage">
           ⚠️ {{ errorMessage }}
         </div>

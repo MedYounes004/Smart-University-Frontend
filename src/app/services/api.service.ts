@@ -26,12 +26,12 @@ export interface RegisterStudentRequest {
 }
 
 export interface RegisterProfessorRequest {
-  nom         : string;
-  prenom      : string;
-  email       : string;
-  password    : string;
-  grade       : string;
-  departement : string;
+  nom        : string;
+  prenom     : string;
+  email      : string;
+  password   : string;
+  grade      : string;
+  departement: string;
 }
 
 export interface Course {
@@ -56,6 +56,28 @@ export interface AskResponse {
   answer   : string;
   sources  : { file: string; page: number; score: number }[];
   course_id: string;
+}
+
+// ── NEW: Profile interfaces ────────────────────────────────────
+export interface StudentProfile {
+  id       : string;
+  nom      : string;
+  prenom   : string;
+  email    : string;
+  filiere  : string;
+  role     : string;
+  courseIds: string[];
+}
+
+export interface ProfessorProfile {
+  id         : string;
+  nom        : string;
+  prenom     : string;
+  email      : string;
+  grade      : string;
+  departement: string;
+  role       : string;
+  courseIds  : string[];
 }
 
 // ─── Service ──────────────────────────────────────────────────
@@ -96,6 +118,24 @@ export class ApiService {
   registerProfessor(request: RegisterProfessorRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(
       `${this.springUrl}/auth/register/professor`, request
+    );
+  }
+
+  // ══════════════════════════════════════════════════════
+  //  PROFILE
+  // ══════════════════════════════════════════════════════
+
+  getStudentProfile(token: string): Observable<StudentProfile> {
+    return this.http.get<StudentProfile>(
+      `${this.springUrl}/student/profile`,
+      { headers: this.authHeaders(token) }
+    );
+  }
+
+  getProfessorProfile(token: string): Observable<ProfessorProfile> {
+    return this.http.get<ProfessorProfile>(
+      `${this.springUrl}/professor/profile`,
+      { headers: this.authHeaders(token) }
     );
   }
 

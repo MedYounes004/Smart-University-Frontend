@@ -104,4 +104,9 @@ export class LoginPage {
     this.router.navigate(['/home']);
   }
 }
+// In your login.page.ts
+
+onGoToSignUp(): void {
+  this.router.navigate(['/sign-up']);
+}
 }

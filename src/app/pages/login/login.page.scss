@@ -245,3 +245,28 @@
   border-radius: 8px;
   margin-bottom: 8px;
 }
+
+.sign-up-prompt {
+  margin-top: 32px;
+  text-align: center;
+
+  p {
+    font-size: 14px;
+    color: var(--ion-color-medium, #8c8c8c);
+    margin: 0;
+  }
+}
+
+.sign-up-link {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ion-color-primary, #3880ff);
+  cursor: pointer;
+
+  &:active {
+    text-decoration: underline;
+  }
+}
