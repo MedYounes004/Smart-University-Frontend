@@ -1,0 +1,173 @@
+<ion-content class="sign-up-content" [fullscreen]="true">
+
+  <!-- ROLE SELECTION STEP -->
+  <div *ngIf="step === 'role'" class="screen-wrapper">
+    <div class="top-bar">
+      <button class="back-btn" (click)="onBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </button>
+    </div>
+
+    <div class="content-center">
+      <div class="heading-block">
+        <h2 class="title">Create Account</h2>
+        <p class="subtitle">Select your role to get started</p>
+      </div>
+
+      <div class="role-cards">
+        <button class="role-card" (click)="handleRoleSelect('student')">
+          <div class="role-icon student-icon">
+            <ion-icon name="school-outline"></ion-icon>
+          </div>
+          <div class="role-text">
+            <h3>I'm a Student</h3>
+            <p>Access courses, events, and campus resources</p>
+          </div>
+        </button>
+
+        <button class="role-card" (click)="handleRoleSelect('professor')">
+          <div class="role-icon professor-icon">
+            <ion-icon name="briefcase-outline"></ion-icon>
+          </div>
+          <div class="role-text">
+            <h3>I'm a Professor</h3>
+            <p>Manage courses, students, and academic content</p>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM STEP -->
+  <div *ngIf="step === 'form'" class="screen-wrapper">
+    <div class="top-bar">
+      <button class="back-btn" (click)="step = 'role'">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </button>
+    </div>
+
+    <div class="form-header">
+      <div class="form-header-row">
+        <div class="role-badge" [ngClass]="role === 'student' ? 'student-badge' : 'professor-badge'">
+          <ion-icon [name]="role === 'student' ? 'school-outline' : 'briefcase-outline'"></ion-icon>
+        </div>
+        <h2 class="title">
+          {{ role === 'student' ? 'Student' : 'Professor' }} Registration
+        </h2>
+      </div>
+      <p class="subtitle">Fill in your details to create your account</p>
+    </div>
+
+    <div class="form-body">
+
+      <div class="name-row">
+        <div class="field-group half">
+          <label>First Name</label>
+          <div class="input-wrapper">
+            <ion-icon name="person-outline" class="input-icon"></ion-icon>
+            <input
+              type="text"
+              placeholder="John"
+              [(ngModel)]="formData.firstName"
+              class="custom-input"
+            />
+          </div>
+        </div>
+        <div class="field-group half">
+          <label>Last Name</label>
+          <div class="input-wrapper">
+            <input
+              type="text"
+              placeholder="Doe"
+              [(ngModel)]="formData.lastName"
+              class="custom-input"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>University Email</label>
+        <div class="input-wrapper">
+          <ion-icon name="mail-outline" class="input-icon"></ion-icon>
+          <input
+            type="email"
+            [placeholder]="role === 'student' ? 'student@university.edu' : 'professor@university.edu'"
+            [(ngModel)]="formData.email"
+            class="custom-input"
+          />
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>{{ role === 'student' ? 'Student ID' : 'Employee ID' }}</label>
+        <div class="input-wrapper">
+          <ion-icon name="card-outline" class="input-icon"></ion-icon>
+          <input
+            type="text"
+            [placeholder]="role === 'student' ? 'STU123456' : 'EMP789012'"
+            [(ngModel)]="formData.idNumber"
+            class="custom-input"
+          />
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Password</label>
+        <div class="input-wrapper">
+          <ion-icon name="lock-closed-outline" class="input-icon"></ion-icon>
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="Minimum 8 characters"
+            [(ngModel)]="formData.password"
+            class="custom-input"
+          />
+          <button class="toggle-btn" (click)="showPassword = !showPassword">
+            <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+          </button>
+        </div>
+        <p class="error-hint" *ngIf="formData.password && formData.password.length < 8">
+          Password must be at least 8 characters
+        </p>
+      </div>
+
+      <div class="field-group">
+        <label>Confirm Password</label>
+        <div class="input-wrapper">
+          <ion-icon name="lock-closed-outline" class="input-icon"></ion-icon>
+          <input
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            placeholder="Re-enter password"
+            [(ngModel)]="formData.confirmPassword"
+            class="custom-input"
+          />
+          <button class="toggle-btn" (click)="showConfirmPassword = !showConfirmPassword">
+            <ion-icon [name]="showConfirmPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+          </button>
+        </div>
+        <p class="error-hint" *ngIf="formData.confirmPassword && formData.password !== formData.confirmPassword">
+          Passwords do not match
+        </p>
+      </div>
+
+    </div><!-- end form-body -->
+
+    <div class="form-footer">
+      <button
+        class="submit-btn"
+        [disabled]="!isFormValid()"
+        [class.disabled]="!isFormValid()"
+        (click)="handleSubmit()"
+      >
+        Create Account
+      </button>
+      <p class="terms-text">
+        By signing up, you agree to our Terms of Service and Privacy Policy
+      </p>
+    </div>
+
+  
+
+  </div>
+
+</ion-content>
