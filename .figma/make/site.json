@@ -1,0 +1,10 @@
+{
+  "description": "This mobile-first Smart University App enhances student life by providing easy access to courses, events, and an AI assistant for instant support and information.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
